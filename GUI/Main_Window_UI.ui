@@ -1,0 +1,486 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1920</width>
+    <height>1080</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: #d2d2d2;</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QWidget" name="widget_window_left_part" native="true">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>291</width>
+      <height>1080</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: #d2d2d2;</string>
+    </property>
+    <widget class="QLabel" name="label_scrap">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>0</y>
+       <width>261</width>
+       <height>71</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>35</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: #f7471f;</string>
+     </property>
+     <property name="text">
+      <string>SCRAP</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignHCenter|Qt::AlignTop</set>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="button_aluminijum">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>160</y>
+       <width>271</width>
+       <height>91</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Century Gothic</family>
+       <pointsize>15</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: #1c2632;
+color: #adaeaf;
+border-radius: 10px;</string>
+     </property>
+     <property name="text">
+      <string>Aluminijum</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="button_bakar">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>270</y>
+       <width>271</width>
+       <height>91</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>15</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: #1c2632;
+color: #adaeaf;
+border-radius: 10px;</string>
+     </property>
+     <property name="text">
+      <string>Bakar</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="button_harness">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>380</y>
+       <width>271</width>
+       <height>91</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>15</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: #1c2632;
+color: #adaeaf;
+border-radius: 10px;</string>
+     </property>
+     <property name="text">
+      <string>Harness</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="button_plastika">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>490</y>
+       <width>271</width>
+       <height>91</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>15</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: #1c2632;
+color: #adaeaf;
+border-radius: 10px;</string>
+     </property>
+     <property name="text">
+      <string>Plastika</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="button_terminal">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>600</y>
+       <width>271</width>
+       <height>91</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>15</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: #1c2632;
+color: #adaeaf;
+border-radius: 10px;</string>
+     </property>
+     <property name="text">
+      <string>Terminal</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="button_potvrdi">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>800</y>
+       <width>271</width>
+       <height>171</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>24</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: #1c2632;
+color: #f7471f;
+border : 5px solid ;
+border-radius: 25px;
+border-color: #f7471f;</string>
+     </property>
+     <property name="text">
+      <string>Potvrdi</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="widget_window_right_part" native="true">
+    <property name="geometry">
+     <rect>
+      <x>300</x>
+      <y>0</y>
+      <width>1621</width>
+      <height>1080</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>15</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: #1c2632;
+border-radius: 25px;</string>
+    </property>
+    <widget class="QLabel" name="label_data_collector">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>10</y>
+       <width>481</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>35</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: #adaeaf;</string>
+     </property>
+     <property name="text">
+      <string>DATA COLLECTOR</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_logo">
+     <property name="geometry">
+      <rect>
+       <x>1330</x>
+       <y>10</y>
+       <width>271</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap>C:/Users/DELL/.designer/RESOURCES/IMAGES/logo_350x45_m75percent.png</pixmap>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="combo_box_team">
+     <property name="geometry">
+      <rect>
+       <x>1330</x>
+       <y>80</y>
+       <width>261</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: #d2d2d2;</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_stanica">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>140</y>
+       <width>141</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>15</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: #adaeaf;</string>
+     </property>
+     <property name="text">
+      <string>Stanica</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_predmet">
+     <property name="geometry">
+      <rect>
+       <x>480</x>
+       <y>140</y>
+       <width>141</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>15</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: #adaeaf;</string>
+     </property>
+     <property name="text">
+      <string>Predmet</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_kod_greske">
+     <property name="geometry">
+      <rect>
+       <x>910</x>
+       <y>130</y>
+       <width>401</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>15</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: #adaeaf;</string>
+     </property>
+     <property name="text">
+      <string>Kod greske</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="combo_box_stanica">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>210</y>
+       <width>401</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: #d2d2d2;
+border-radius: 10px;</string>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>100</width>
+       <height>100</height>
+      </size>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="combo_box_predmet">
+     <property name="geometry">
+      <rect>
+       <x>480</x>
+       <y>210</y>
+       <width>401</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: #d2d2d2;
+border-radius: 10px;</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="combo_box_kod_greske">
+     <property name="geometry">
+      <rect>
+       <x>910</x>
+       <y>210</y>
+       <width>401</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: #d2d2d2;
+border-radius: 10px;</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="button_plus">
+     <property name="geometry">
+      <rect>
+       <x>1400</x>
+       <y>170</y>
+       <width>121</width>
+       <height>121</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>100</pointsize>
+      </font>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::LeftToRight</enum>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: #adaeaf;</string>
+     </property>
+     <property name="text">
+      <string>+</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="button_minus">
+     <property name="geometry">
+      <rect>
+       <x>1410</x>
+       <y>610</y>
+       <width>121</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>100</pointsize>
+      </font>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::LeftToRight</enum>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: #adaeaf;</string>
+     </property>
+     <property name="text">
+      <string>-</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>1410</x>
+       <y>330</y>
+       <width>121</width>
+       <height>271</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>100</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: #adaeaf;
+color: #1c2632;</string>
+     </property>
+     <property name="text">
+      <string>N</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_post_process">
+     <property name="geometry">
+      <rect>
+       <x>60</x>
+       <y>750</y>
+       <width>1551</width>
+       <height>211</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>150</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: #adaeaf;</string>
+     </property>
+     <property name="text">
+      <string>Post Process</string>
+     </property>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1920</width>
+     <height>26</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
