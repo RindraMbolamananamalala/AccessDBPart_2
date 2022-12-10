@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>widget_content</class>
+ <widget class="QWidget" name="widget_content">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1920</width>
+    <height>951</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: #1c2632;</string>
+  </property>
+  <widget class="QLabel" name="label_bottom_descirption">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>780</y>
+     <width>1601</width>
+     <height>141</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Yu Gothic UI Light</family>
+     <pointsize>100</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: #adaeaf;</string>
+   </property>
+   <property name="text">
+    <string>Zone</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

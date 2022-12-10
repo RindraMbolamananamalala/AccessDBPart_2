@@ -3,14 +3,10 @@ import time
 
 from PySide2.QtWidgets import *
 
-
-from PRESENTATION.VIEW.access_db_view import AccessDBView
-from PRESENTATION.CONTROLLER.access_db_controller import AccessDBController
-
 from PRESENTATION.HMI.ui_AccessDB_PII_MainWindow_GUI import Ui_MainWindow
-
-import threading
-
+from PRESENTATION.HMI.WIDGET.accessdb_pii_content_zone import AccessDBPIIContentZone
+from PRESENTATION.HMI.WIDGET.access_db_pii_content_body_zone import AccessDBPIIContentBodyZone
+from PRESENTATION.HMI.WIDGET.accessdb_pii_content_familije import AccessDBPIIContentFamilije
 
 if __name__ == '__main__':
     application = QApplication(sys.argv)
@@ -18,12 +14,19 @@ if __name__ == '__main__':
     main_window = QMainWindow()
 
     ui_main_window = Ui_MainWindow(main_window)
-    ui_main_window.get_main_window().showMaximized();
+    ui_main_window.get_main_window().showMaximized()
+
+    content_zone = AccessDBPIIContentZone(ui_main_window.get_widget_content())
+
+    content_body_zone = AccessDBPIIContentBodyZone(ui_main_window.get_widget_content())
+
+    content_familije = AccessDBPIIContentFamilije(ui_main_window.get_widget_content())
+
+    ui_main_window.set_content(content_zone)
+
 
 
     # controller = CRUDFileController()
-
-
 
     """
     WORKED FOR PI (beginning)
@@ -41,17 +44,15 @@ if __name__ == '__main__':
     WORKED FOR PI (end)
     """
 
-
     #
     # view = CRUDFileView(window)
     #
     # controller = CRUDFileController(view)
     #
 
-    #file_event_handler = CRUDFileEventHandler(controller)
+    # file_event_handler = CRUDFileEventHandler(controller)
 
     #
     # controller.get_crud_file_view().get_main_window_ui().get_main_window().show()
-
 
     sys.exit(application.exec_())

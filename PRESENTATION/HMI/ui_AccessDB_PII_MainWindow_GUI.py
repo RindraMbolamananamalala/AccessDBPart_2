@@ -12,6 +12,8 @@ from PySide2.QtCore import *
 from PySide2.QtGui import *
 from PySide2.QtWidgets import *
 
+from PRESENTATION.HMI.WIDGET.accessdb_pii_content_zone import AccessDBPIIContentZone
+
 
 class Ui_MainWindow(object):
 
@@ -29,6 +31,22 @@ class Ui_MainWindow(object):
         :return: The Qt Main Window used by the the current Main Window.
         """
         return self.main_window
+
+    def get_widget_content(self) -> QWidget:
+        """
+
+        :return: The Widget Content of the Main Window
+        """
+        return self.widget_content
+
+    def set_content(self, content: AccessDBPIIContentZone):
+        if self.get_content():
+            self.get_content().get_widget_content().close()
+        self.content = content
+        self.get_content().get_widget_content().show()
+
+    def get_content(self) -> AccessDBPIIContentZone:
+        return self.content
 
     def __init__(self, MainWindow):
         if not MainWindow.objectName():
@@ -89,6 +107,9 @@ class Ui_MainWindow(object):
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
         MainWindow.setStatusBar(self.statusbar)
+
+        # Initializing the content of the MainWindow to None at the beginning
+        self.content = None
 
         self.retranslateUi(MainWindow)
 
