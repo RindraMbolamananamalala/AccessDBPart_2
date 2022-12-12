@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>732</width>
+    <height>526</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: #d2d2d2;
+border-radius: 25px;</string>
+  </property>
+  <widget class="QLabel" name="label_finalna_potvrda">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>181</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Century Gothic</family>
+     <pointsize>14</pointsize>
+     <weight>50</weight>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: #1c2632;</string>
+   </property>
+   <property name="text">
+    <string>Finalna potvrda</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_aluminijium">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>70</y>
+     <width>211</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Yu Gothic UI Light</family>
+     <pointsize>25</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: #1c2632;</string>
+   </property>
+   <property name="text">
+    <string>Aluminijium</string>
+   </property>
+  </widget>
+  <widget class="QTextEdit" name="text_aluminijium">
+   <property name="geometry">
+    <rect>
+     <x>260</x>
+     <y>70</y>
+     <width>271</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Century Gothic</family>
+     <pointsize>20</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border : 1px solid ;
+border-radius: 10px;
+border-color: #1c2632;
+background-color: #e5e5e5;</string>
+   </property>
+   <property name="placeholderText">
+    <string>kg</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_bakar">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>140</y>
+     <width>211</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Yu Gothic UI Light</family>
+     <pointsize>25</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: #1c2632;</string>
+   </property>
+   <property name="text">
+    <string>Bakar</string>
+   </property>
+  </widget>
+  <widget class="QTextEdit" name="text_bakar">
+   <property name="geometry">
+    <rect>
+     <x>260</x>
+     <y>140</y>
+     <width>271</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Century Gothic</family>
+     <pointsize>20</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border : 1px solid ;
+border-radius: 10px;
+border-color: #1c2632;
+background-color: #e5e5e5;</string>
+   </property>
+   <property name="placeholderText">
+    <string>kg</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_terminali">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>280</y>
+     <width>211</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Yu Gothic UI Light</family>
+     <pointsize>25</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: #1c2632;</string>
+   </property>
+   <property name="text">
+    <string>Terminali</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_plastika">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>210</y>
+     <width>211</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Yu Gothic UI Light</family>
+     <pointsize>25</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: #1c2632;</string>
+   </property>
+   <property name="text">
+    <string>Plastika</string>
+   </property>
+  </widget>
+  <widget class="QTextEdit" name="text_plastika">
+   <property name="geometry">
+    <rect>
+     <x>260</x>
+     <y>210</y>
+     <width>271</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Century Gothic</family>
+     <pointsize>20</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border : 1px solid ;
+border-radius: 10px;
+border-color: #1c2632;
+background-color: #e5e5e5;</string>
+   </property>
+   <property name="placeholderText">
+    <string>kg</string>
+   </property>
+  </widget>
+  <widget class="QTextEdit" name="text_terminali">
+   <property name="geometry">
+    <rect>
+     <x>260</x>
+     <y>280</y>
+     <width>271</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Century Gothic</family>
+     <pointsize>20</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border : 1px solid ;
+border-radius: 10px;
+border-color: #1c2632;
+background-color: #e5e5e5;</string>
+   </property>
+   <property name="placeholderText">
+    <string>kg</string>
+   </property>
+  </widget>
+  <widget class="QTextEdit" name="text_harness">
+   <property name="geometry">
+    <rect>
+     <x>260</x>
+     <y>350</y>
+     <width>271</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Century Gothic</family>
+     <pointsize>20</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border : 1px solid ;
+border-radius: 10px;
+border-color: #1c2632;
+background-color: #e5e5e5;</string>
+   </property>
+   <property name="placeholderText">
+    <string>kg</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_harness">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>350</y>
+     <width>211</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Yu Gothic UI Light</family>
+     <pointsize>25</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: #1c2632;</string>
+   </property>
+   <property name="text">
+    <string>Harness</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="button_ok">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>430</y>
+     <width>171</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Century Gothic</family>
+     <pointsize>13</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-radius: 25px;
+background-color: #1c2632;
+color: #d2d2d2;</string>
+   </property>
+   <property name="text">
+    <string>OK</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="button_nazad">
+   <property name="geometry">
+    <rect>
+     <x>400</x>
+     <y>430</y>
+     <width>171</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Century Gothic</family>
+     <pointsize>13</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-radius: 25px;
+background-color: #1c2632;
+color: #d2d2d2;</string>
+   </property>
+   <property name="text">
+    <string>Nazad</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -8,6 +8,7 @@ from PRESENTATION.HMI.WIDGET.accessdb_pii_content_zone import AccessDBPIIContent
 from PRESENTATION.HMI.WIDGET.access_db_pii_content_body_zone import AccessDBPIIContentBodyZone
 from PRESENTATION.HMI.WIDGET.accessdb_pii_content_familije import AccessDBPIIContentFamilije
 from PRESENTATION.HMI.FORM.form_weigh_material_ui import FormWeighMaterialUI
+from PRESENTATION.HMI.FORM.form_weighs_validation_ui import FormWeighsValidationUI
 
 if __name__ == '__main__':
     application = QApplication(sys.argv)
@@ -24,7 +25,9 @@ if __name__ == '__main__':
     content_familije = AccessDBPIIContentFamilije(ui_main_window.get_widget_content())
 
     form_weigh_material = FormWeighMaterialUI(None)
-    form_weigh_material.get_form_weigh_material().show()
+    form_weighs_validation = FormWeighsValidationUI(None)
+
+    form_weighs_validation.get_form_weighs_validation().show()
 
     ui_main_window.set_content(content_zone)
 
