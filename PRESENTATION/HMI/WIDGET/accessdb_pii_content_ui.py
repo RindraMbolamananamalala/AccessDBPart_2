@@ -11,8 +11,17 @@ from PySide2.QtCore import *
 from PySide2.QtGui import *
 from PySide2.QtWidgets import *
 
+from PRESENTATION.HMI.accessdb_pii_hmi import AccessDBPIIHMI
 
-class AccessDBPIIContentUI(object):
+
+class AccessDBPIIContentUI(AccessDBPIIHMI):
+
+    def show_hmi(self):
+        """
+        Displaying the widget content
+        :return:
+        """
+        self.get_widget_content().show()
 
     def set_widget_content(self, widget_content: QWidget):
         """
@@ -34,6 +43,9 @@ class AccessDBPIIContentUI(object):
 
         :param parent: The Widget that will play the role of "Parent" for the the Content
         """
+        # First, let's call the Superclass' __init__() function
+        super(AccessDBPIIContentUI, self).__init__()
+
         # Preparing the Widget Content
         widget_content = QWidget(parent)
         if not widget_content.objectName():
@@ -64,4 +76,3 @@ class AccessDBPIIContentUI(object):
         """
         widget_content.setWindowTitle(QCoreApplication.translate("widget_content", u"Form", None))
     # retranslateUi
-

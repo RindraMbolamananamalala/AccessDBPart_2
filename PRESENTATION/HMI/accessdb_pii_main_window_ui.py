@@ -8,14 +8,31 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
+"""
+accessdb_pii_main_window.py: The python file dedicated to the implementation of the GUI related to the Main Window of
+the Application.
+"""
+
+__author__ = "Rindra Mbolamananamalala"
+__email__ = "rindraibi@gmail.com"
+
 from PySide2.QtCore import *
 from PySide2.QtGui import *
 from PySide2.QtWidgets import *
 
+from PRESENTATION.HMI.accessdb_pii_hmi import AccessDBPIIHMI
+
 from PRESENTATION.HMI.WIDGET.accessdb_pii_content_zone import AccessDBPIIContentZone
 
 
-class Ui_MainWindow(object):
+class Ui_MainWindow(AccessDBPIIHMI):
+
+    def show_hmi(self):
+        """
+        Displaying the main window.
+        :return:
+        """
+        self.get_main_window().showMaximized()
 
     def set_main_window(self, main_window: QMainWindow):
         """
@@ -40,10 +57,7 @@ class Ui_MainWindow(object):
         return self.widget_content
 
     def set_content(self, content: AccessDBPIIContentZone):
-        if self.get_content():
-            self.get_content().get_widget_content().close()
         self.content = content
-        self.get_content().get_widget_content().show()
 
     def get_content(self) -> AccessDBPIIContentZone:
         return self.content

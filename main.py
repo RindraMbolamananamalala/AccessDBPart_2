@@ -3,34 +3,39 @@ import time
 
 from PySide2.QtWidgets import *
 
-from PRESENTATION.HMI.ui_AccessDB_PII_MainWindow_GUI import Ui_MainWindow
+
 from PRESENTATION.HMI.WIDGET.accessdb_pii_content_zone import AccessDBPIIContentZone
 from PRESENTATION.HMI.WIDGET.access_db_pii_content_body_zone import AccessDBPIIContentBodyZone
 from PRESENTATION.HMI.WIDGET.accessdb_pii_content_familije import AccessDBPIIContentFamilije
 from PRESENTATION.HMI.FORM.form_weigh_material_ui import FormWeighMaterialUI
 from PRESENTATION.HMI.FORM.form_weighs_validation_ui import FormWeighsValidationUI
 
+from PRESENTATION.CONTROLLER.accessdb_pii_controller import AccessDBPIIController
+
 if __name__ == '__main__':
     application = QApplication(sys.argv)
 
-    main_window = QMainWindow()
+    # main_window = QMainWindow()
+    #
+    # ui_main_window = Ui_MainWindow(main_window)
+    # ui_main_window.get_main_window().showMaximized()
+    #
+    # content_zone = AccessDBPIIContentZone(ui_main_window.get_widget_content())
+    #
+    # content_body_zone = AccessDBPIIContentBodyZone(ui_main_window.get_widget_content())
+    #
+    # content_familije = AccessDBPIIContentFamilije(ui_main_window.get_widget_content())
+    #
+    # form_weigh_material = FormWeighMaterialUI(None)
+    # form_weighs_validation = FormWeighsValidationUI(None)
+    #
+    # form_weighs_validation.get_form_weighs_validation().show()
+    #
+    # ui_main_window.set_content(content_zone)
 
-    ui_main_window = Ui_MainWindow(main_window)
-    ui_main_window.get_main_window().showMaximized()
+    controller = AccessDBPIIController()
 
-    content_zone = AccessDBPIIContentZone(ui_main_window.get_widget_content())
-
-    content_body_zone = AccessDBPIIContentBodyZone(ui_main_window.get_widget_content())
-
-    content_familije = AccessDBPIIContentFamilije(ui_main_window.get_widget_content())
-
-    form_weigh_material = FormWeighMaterialUI(None)
-    form_weighs_validation = FormWeighsValidationUI(None)
-
-    form_weighs_validation.get_form_weighs_validation().show()
-
-    ui_main_window.set_content(content_zone)
-
+    controller.get_accessdb_pii_main_window_view().get_corresponding_hmi().get_main_window().showMaximized()
 
 
     # controller = CRUDFileController()
