@@ -50,3 +50,22 @@ class AccessDBPIIMainWindowView(AccessDBPIIView):
     def __init__(self):
         # Initializing the UI of the AccessDB Part II : The MainWindowUI
         self.set_corresponding_hmi(Ui_MainWindow(QMainWindow()))
+
+        # Managing Events
+        self.manage_events()
+
+    def manage_events(self):
+        """
+        Managing all the events related to the Main Window.
+        :return:
+        """
+        # When a "Team" selection occurs, the Child (content) view has to be notified of it
+        self.get_corresponding_hmi().get_combo_box_teams().currentIndexChanged.connect(self.notify_content_view)
+
+    def notify_content_view(self):
+        """
+        Notifying the content view of the current status of the "Teams"'s selection
+        :return: None
+        """
+        if self.get_corresponding_hmi().get_combo_box_teams().currentIndex() != -1:
+            self.get_content_view().manage_notification_by_parent()

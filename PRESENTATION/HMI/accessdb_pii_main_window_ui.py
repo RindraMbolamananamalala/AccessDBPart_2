@@ -20,6 +20,9 @@ from PySide2.QtCore import *
 from PySide2.QtGui import *
 from PySide2.QtWidgets import *
 
+from CONFIGURATIONS.application_properties import get_application_property
+from CONFIGURATIONS.logger import LOGGER
+
 from PRESENTATION.HMI.accessdb_pii_hmi import AccessDBPIIHMI
 
 from PRESENTATION.HMI.WIDGET.accessdb_pii_content_zone import AccessDBPIIContentZone
@@ -61,6 +64,9 @@ class Ui_MainWindow(AccessDBPIIHMI):
 
     def get_content(self) -> AccessDBPIIContentZone:
         return self.content
+
+    def get_combo_box_teams(self) -> QComboBox:
+        return self.combo_box_team
 
     def __init__(self, MainWindow):
         if not MainWindow.objectName():
@@ -122,6 +128,10 @@ class Ui_MainWindow(AccessDBPIIHMI):
         self.statusbar.setObjectName(u"statusbar")
         MainWindow.setStatusBar(self.statusbar)
 
+        # Feeding the "Teams" combobox and then choosing no "Team" at the beginning
+        self.feed_team_combo_box()
+        self.get_combo_box_teams().setCurrentIndex(-1)
+
         # Initializing the content of the MainWindow to None at the beginning
         self.content = None
 
@@ -129,6 +139,23 @@ class Ui_MainWindow(AccessDBPIIHMI):
 
         QMetaObject.connectSlotsByName(MainWindow)
     # setupUi
+
+    def feed_team_combo_box(self):
+        """
+        Feeding the Combo Box dedicated to "Teams" with the corresponding values contained in the application.ini file.
+        :return: None
+        """
+        try:
+            teams_list = get_application_property("teams").split(",")
+            for team in teams_list:
+                self.get_combo_box_teams().addItem(team)
+        except Exception as exception:
+            # At least one error has occurred, therefore, stop the process
+            LOGGER.error(
+                exception.__class__.__name__ + ": " + str(exception)
+                + ". Can't go further with the Feeding Process. "
+            )
+            raise
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))

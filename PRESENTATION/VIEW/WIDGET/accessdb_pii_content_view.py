@@ -16,3 +16,13 @@ class AccessDBPIIContentView(AccessDBPIIView):
     def __init__(self):
         # First, let's call the Superclass' __init__() function
         super(AccessDBPIIView, self).__init__()
+
+    def manage_notification_by_parent(self):
+        """
+        The Parent View has sent a Notification, let's manage it in function of the current Child's type...
+        """
+        # ... but, just Pass for the moment, let the child manage it..
+        pass
+
+
+

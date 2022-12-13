@@ -20,6 +20,21 @@ from CONFIGURATIONS.logger import LOGGER
 
 class AccessDBPIIContentZone(AccessDBPIIContentUI):
 
+    def set_content_zone_options(self, content_zone_options: list):
+        """
+
+        :param content_zone_options: The list of options' buttons for the Content Zone
+        :return:
+        """
+        self.content_zone_options = content_zone_options
+
+    def get_content_zone_options(self) -> list:
+        """
+
+        :return: The list of options' buttons for the Content Zone
+        """
+        return self.content_zone_options
+
     def __init__(self, parent: QWidget):
         """
 
@@ -32,7 +47,8 @@ class AccessDBPIIContentZone(AccessDBPIIContentUI):
         self.label_bottom_description.setText("Zone")
 
         try:
-            # Loading the Zone's options buttons
+            # Managing the Zone's options buttons
+            self.set_content_zone_options([])
             option_list = get_application_property("zone_options").split(",")
             i = 0
             j = 0
@@ -58,7 +74,9 @@ class AccessDBPIIContentZone(AccessDBPIIContentUI):
                 font1.setBold(False)
                 button_option.setFont(font1)
                 button_option.setText(option_list[cpt])
+                button_option.setCursor(Qt.PointingHandCursor)
                 button_option.show()
+                self.get_content_zone_options().append(button_option)
                 if i < 3:
                     i += 1
                 else:
