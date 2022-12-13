@@ -20,6 +20,7 @@ from PRESENTATION.VIEW.accessdb_pii_main_window_view import AccessDBPIIMainWindo
 from PRESENTATION.VIEW.WIDGET.accessdb_pii_content_view import AccessDBPIIContentView
 from PRESENTATION.VIEW.WIDGET.accessdb_pii_content_zone_view import AccessDBPIIContentZoneView
 from PRESENTATION.VIEW.WIDGET.accessdb_pii_content_familije_view import AccessDBPIIContentFamilijeView
+from PRESENTATION.VIEW.WIDGET.accessdb_pii_content_body_zone_view import AccessDBPIIContentBodyZoneView
 
 
 class AccessDBPIIController:
@@ -83,6 +84,14 @@ class AccessDBPIIController:
             for button in content_zone_options:
                 button.clicked.connect(partial(self.pass_content_zone, button))
 
+        # When one of the Buttons within the "Content Familije" is clicked, the user may have in visual the "Body zone",
+        # or, the READ process on the first DB will directly happen, in function of the Familije's option chosen
+        if isinstance(self.get_current_main_window_content_view(), AccessDBPIIContentFamilijeView):
+            content_familije_options = self.get_current_main_window_content_view().get_corresponding_hmi()\
+                                            .get_content_familije_options()
+            for button in content_familije_options:
+                button.clicked.connect(partial(self.pass_content_familije, button))
+
     def pass_content_zone(self, button: QPushButton):
         """
         If the Button (Option) chosen is that of "Manufacturing", load the "Content Familijie".
@@ -102,6 +111,8 @@ class AccessDBPIIController:
             )
             # loading the "Familijie Content"
             main_window_view.set_content_view(content_familijie_view)
+            # formalizing the GUI's state transition
+            self.set_current_main_window_content_view(content_familijie_view)
         else:
             """
             Another option different from "Manufacturing" has been chosen, therefore, directly to the READ process 
@@ -109,3 +120,37 @@ class AccessDBPIIController:
             """
             """TO BE MANAGED LATER, JUST PASS FOR THE MOMENT"""
             print(button.text() + " has been chosen, directly to READ process then!!!")
+        # Since a transition of GUI's state has taken place, an update of the Events management is required
+        self.manage_events()
+
+    def pass_content_familije(self, button: QPushButton):
+        """
+        If the Button (Option) chosen is that of "Body", load the "Body Zone Content".
+        Otherwise ("Cockpit", "Engine" or "Seats"), directly pass to the READ process on the first DB.
+        :param button: The Button (Option) chosen by the User.
+        :return: None
+        """
+        if button.text() == "Body":
+            """
+            "Body" option has been chosen, let's load the "Body Zone Content" on the main window
+            """
+            # getting the main window
+            main_window_view = self.get_accessdb_pii_main_window_view()
+            # preparing the "Familijie Content"
+            content_body_zone_view = AccessDBPIIContentBodyZoneView(
+                main_window_view.get_corresponding_hmi().get_widget_content()
+            )
+            # loading the "Body Zone Content"
+            main_window_view.set_content_view(content_body_zone_view)
+            # formalizing the GUI's state transition
+            self.set_current_main_window_content_view(content_body_zone_view)
+        else:
+            """
+            Another option different from "Body" has been chosen, therefore, directly to the READ process 
+            on the first DB.
+            """
+            """TO BE MANAGED LATER, JUST PASS FOR THE MOMENT"""
+            print(button.text() + " has been chosen, directly to READ process then!!!")
+        # Since a transition of GUI's state has taken place, an update of the Events management is required
+        self.manage_events()
+

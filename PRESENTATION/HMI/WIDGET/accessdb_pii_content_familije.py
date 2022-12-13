@@ -21,6 +21,21 @@ from CONFIGURATIONS.logger import LOGGER
 
 class AccessDBPIIContentFamilije(AccessDBPIIContentUI):
 
+    def set_content_familije_options(self, content_familije_options: list):
+        """
+
+        :param content_familije_options: The list of Familije's options
+        :return:
+        """
+        self.content_familije_options = content_familije_options
+
+    def get_content_familije_options(self) -> list:
+        """
+
+        :return: The list of Familije's options
+        """
+        return self.content_familije_options
+
     def __init__(self, parent: QWidget):
         """
 
@@ -41,6 +56,8 @@ class AccessDBPIIContentFamilije(AccessDBPIIContentUI):
             button_height = 200
             buttons_space_x = 170
             buttons_space_y = 275
+            # Initializing the Familije's options list with an empty list
+            self.set_content_familije_options([])
             for cpt in range(0, len(option_list)):
                 button_option = QPushButton(self.get_widget_content())
                 button_option.setGeometry(
@@ -59,6 +76,8 @@ class AccessDBPIIContentFamilije(AccessDBPIIContentUI):
                 font1.setBold(False)
                 button_option.setFont(font1)
                 button_option.setText(option_list[cpt])
+                button_option.setCursor(Qt.PointingHandCursor)
+                self.get_content_familije_options().append(button_option)
                 button_option.show()
                 if i < 3:
                     i += 1
