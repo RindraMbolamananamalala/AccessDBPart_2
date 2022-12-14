@@ -26,6 +26,9 @@ class ExcelASImpl(ExcelASIntf):
         """
         try:
             os.startfile(excel_file_path, 'print')
+            # The Excel file has been successfully printed
+            success_msg = "The Excel file : \"" + excel_file_path + "\"" + "has been successfully printed."
+            LOGGER.info(success_msg)
         except Exception as exception:
             # At least one error has occurred, therefore, stop the process
             LOGGER.error(
@@ -33,4 +36,3 @@ class ExcelASImpl(ExcelASIntf):
                 + ". Can't go further with the Printing Process. "
             )
             raise
-
