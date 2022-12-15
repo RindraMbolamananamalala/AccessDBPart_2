@@ -17,6 +17,21 @@ from PySide2.QtWidgets import *
 
 class AccessDBPIIContentBodyAreaView(AccessDBPIIContentView):
 
+    def set_first_area_selected(self, first_area_selected: str):
+        """
+
+        :param first_area_selected: The first Area selected at the level of the Body Zone View
+        :return: None
+        """
+        self.first_area_selected = first_area_selected
+
+    def get_first_area_selected(self) -> str:
+        """
+
+        :return: The first Area selected at the level of the Body Zone View
+        """
+        return self.first_area_selected
+
     def __init__(self, parent: QWidget):
         #  First, let's call the Superclass' __init__() function
         super(AccessDBPIIContentBodyAreaView, self).__init__()
