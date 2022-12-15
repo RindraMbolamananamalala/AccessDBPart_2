@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-line_to_write.py: The python file dedicated to the "Model:Entity:LineToWrite"  implemented within
+line_mfg.py: The python file dedicated to the "Model:Entity:LineMFG"  implemented within
 the "BUSINESS" layer of the Project, and at the same time one of the Project's Entity
 """
 
@@ -17,7 +17,7 @@ from BUSINESS.MODEL.ENTITY.accessdb_pii_entity import AccessDBPIIEntity
 from DATA_ACCESS.data_access_base import Data_Access_Base
 
 
-class LineToWrite(Data_Access_Base, AccessDBPIIEntity):
+class LineMFG(Data_Access_Base, AccessDBPIIEntity):
     __tablename__ = get_application_property("db_line_to_write_table_name")
     id = Column(Integer, primary_key=True, autoincrement=True)
     date_time = Column(DateTime)

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-line_to_write_do.py: The python file dedicated to the "Model:LineToWriteDO" part of the MVC pattern implemented within
+line_mfg_do.py: The python file dedicated to the "Model:LineMFGDO" part of the MVC pattern implemented within
 the "BUSINESS" layer of the Project, and at the same time one of the Project's DOs
 """
 
@@ -15,7 +15,7 @@ import decimal
 from BUSINESS.MODEL.DOMAIN_OBJECT.access_db_do import AccessDBDO
 
 
-class LineToWriteDO(AccessDBDO):
+class LineMFGDO(AccessDBDO):
     def set_date_time(self, date_time: datetime.datetime):
         self.date_time = date_time
 
