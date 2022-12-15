@@ -37,6 +37,13 @@ class Ui_MainWindow(AccessDBPIIHMI):
         """
         self.get_main_window().showMaximized()
 
+    def close_hmi(self):
+        """
+        Displaying the main window.
+        :return:
+        """
+        self.get_main_window().close()
+
     def set_main_window(self, main_window: QMainWindow):
         """
 

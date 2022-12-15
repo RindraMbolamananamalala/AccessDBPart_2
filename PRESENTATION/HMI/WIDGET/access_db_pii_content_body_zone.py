@@ -21,6 +21,21 @@ from PRESENTATION.HMI.WIDGET.accessdb_pii_content_ui import AccessDBPIIContentUI
 
 class AccessDBPIIContentBodyZone(AccessDBPIIContentUI):
 
+    def set_content_body_zone_options(self, content_body_zone_options: list):
+        """
+
+        :param content_body_zone_options: The list of options' buttons for the Content Body Zone
+        :return:
+        """
+        self.content_body_zone_options = content_body_zone_options
+
+    def get_content_body_zone_options(self) -> list:
+        """
+
+        :return: The list of options' buttons for the Content Body Zone
+        """
+        return self.content_body_zone_options
+
     def __init__(self, parent: QWidget):
         """
 
@@ -32,6 +47,9 @@ class AccessDBPIIContentBodyZone(AccessDBPIIContentUI):
 
             # The current Label for the description will have as text "Body zone"
             self.label_bottom_description.setText("Body zone")
+
+            # Managing the Body zone's options buttons
+            self.set_content_body_zone_options([])
 
             # Loading the Body Zone's options buttons
             option_list = get_application_property("body_zone_options").split(",")
@@ -50,6 +68,7 @@ class AccessDBPIIContentBodyZone(AccessDBPIIContentUI):
                         , 350
                         , 175)
                 )
+                button_option.setCursor(Qt.PointingHandCursor)
                 button_option .setStyleSheet(u"background-color: #adaeaf;\n"
                                               "color: #1c2632;\n"
                                               "border-radius: 10px;")
@@ -59,6 +78,7 @@ class AccessDBPIIContentBodyZone(AccessDBPIIContentUI):
                 font1.setBold(False)
                 button_option.setFont(font1)
                 button_option.setText(option_list[cpt])
+                self.get_content_body_zone_options().append(button_option)
                 button_option.show()
                 if i < 3:
                     i += 1

@@ -8,7 +8,6 @@ implemented within the "PRESENTATION" layer of the Project.
 __author__ = "Rindra Mbolamananamalala"
 __email__ = "rindraibi@gmail.com"
 
-
 from PySide2.QtCore import *
 from PySide2.QtGui import *
 from PySide2.QtWidgets import *
@@ -28,9 +27,17 @@ class AccessDBPIIMainWindowView(AccessDBPIIView):
         :param content_view: The Content View associated with the Main Window View
         :return:
         """
+        # Let's close the old Content View first...
+        try:
+            self.get_content_view().get_corresponding_hmi().close_hmi()
+        except:
+            # No old Content View exists yet, so, just pass...
+            pass
+
+        # ... then let's take into account the new Content View...
         self.content_view = content_view
         try:
-            # And also, let's display the HMI associated with the Content View
+            # ... and also, let's display the HMI associated with the new Content View
             self.get_content_view().get_corresponding_hmi().show_hmi()
         except Exception as exception:
             # At least one error has occurred, therefore, stop the process

@@ -20,6 +20,15 @@ class AccessDBPIIHMI(ABC):
         # Just pass, letting the child classes manage it
         pass
 
+    @abstractmethod
+    def close_hmi(self):
+        """
+        Closing the main Element of the HMI
+        :return:
+        """
+        # Just pass, letting the child classes manage it
+        pass
+
     def __init__(self):
         # Just pass, letting the child classes manage it
         pass

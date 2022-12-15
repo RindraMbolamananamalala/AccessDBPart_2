@@ -21,6 +21,7 @@ from PRESENTATION.VIEW.WIDGET.accessdb_pii_content_view import AccessDBPIIConten
 from PRESENTATION.VIEW.WIDGET.accessdb_pii_content_zone_view import AccessDBPIIContentZoneView
 from PRESENTATION.VIEW.WIDGET.accessdb_pii_content_familije_view import AccessDBPIIContentFamilijeView
 from PRESENTATION.VIEW.WIDGET.accessdb_pii_content_body_zone_view import AccessDBPIIContentBodyZoneView
+from PRESENTATION.VIEW.WIDGET.accessdb_pii_content_body_area_view import AccessDBPIIContentBodyAreaView
 
 
 class AccessDBPIIController:
@@ -92,6 +93,15 @@ class AccessDBPIIController:
             for button in content_familije_options:
                 button.clicked.connect(partial(self.pass_content_familije, button))
 
+        # When one of the Buttons within the "Content Body Zone" is clicked, the user may have in visual the
+        # "Body area", or, the READ process on the first DB will directly happen, in function of the
+        # Body Zone's option chosen
+        if isinstance(self.get_current_main_window_content_view(), AccessDBPIIContentBodyZoneView):
+            content_body_zone_options = self.get_current_main_window_content_view().get_corresponding_hmi()\
+                                            .get_content_body_zone_options()
+            for button in content_body_zone_options:
+                button.clicked.connect(partial(self.pass_content_body_zone, button))
+
     def pass_content_zone(self, button: QPushButton):
         """
         If the Button (Option) chosen is that of "Manufacturing", load the "Content Familijie".
@@ -136,7 +146,7 @@ class AccessDBPIIController:
             """
             # getting the main window
             main_window_view = self.get_accessdb_pii_main_window_view()
-            # preparing the "Familijie Content"
+            # preparing the "Body Zone Content"
             content_body_zone_view = AccessDBPIIContentBodyZoneView(
                 main_window_view.get_corresponding_hmi().get_widget_content()
             )
@@ -153,4 +163,37 @@ class AccessDBPIIController:
             print(button.text() + " has been chosen, directly to READ process then!!!")
         # Since a transition of GUI's state has taken place, an update of the Events management is required
         self.manage_events()
+
+    def pass_content_body_zone(self, button: QPushButton):
+        """
+        If the options chosen by the User content "SUB", the Content Body Area will be displayed.
+        Otherwise, the User will be directly redirected to the READ process on the First DB.
+        :param button: The button selected with the Content Body Zone
+        :return: None
+        """""
+        if "SUB " in button.text():
+            """
+            A "SUB *" option has been chosen, let's load the "Body Area Content" on the main window
+            """
+            # getting the main window
+            main_window_view = self.get_accessdb_pii_main_window_view()
+            # preparing the "Body Area Content"
+            content_body_area_view = AccessDBPIIContentBodyAreaView(
+                main_window_view.get_corresponding_hmi().get_widget_content()
+            )
+            # loading the "Body Zone Content"
+            main_window_view.set_content_view(content_body_area_view)
+            # formalizing the GUI's state transition
+            self.set_current_main_window_content_view(content_body_area_view)
+        else:
+            """
+            Another option different from "SUB *" has been chosen, therefore, directly to the READ process 
+            on the first DB.
+            """
+            """TO BE MANAGED LATER, JUST PASS FOR THE MOMENT"""
+            print(button.text() + " has been chosen, directly to READ process then!!!")
+        # Since a transition of GUI's state has taken place, an update of the Events management is required
+        self.manage_events()
+
+
 

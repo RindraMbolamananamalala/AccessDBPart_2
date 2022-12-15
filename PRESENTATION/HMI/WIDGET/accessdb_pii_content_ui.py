@@ -23,6 +23,13 @@ class AccessDBPIIContentUI(AccessDBPIIHMI):
         """
         self.get_widget_content().show()
 
+    def close_hmi(self):
+        """
+        Closing the widget content
+        :return:
+        """
+        self.get_widget_content().close()
+
     def set_widget_content(self, widget_content: QWidget):
         """
 
