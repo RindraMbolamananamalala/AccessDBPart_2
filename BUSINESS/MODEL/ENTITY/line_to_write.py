@@ -12,10 +12,12 @@ from sqlalchemy import Column, Integer, String, DateTime, DECIMAL
 
 from CONFIGURATIONS.application_properties import get_application_property
 
+from BUSINESS.MODEL.ENTITY.accessdb_pii_entity import AccessDBPIIEntity
+
 from DATA_ACCESS.data_access_base import Data_Access_Base
 
 
-class LineToWrite(Data_Access_Base):
+class LineToWrite(Data_Access_Base, AccessDBPIIEntity):
     __tablename__ = get_application_property("db_line_to_write_table_name")
     id = Column(Integer, primary_key=True, autoincrement=True)
     date_time = Column(DateTime)
