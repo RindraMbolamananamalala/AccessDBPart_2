@@ -24,6 +24,8 @@ from PRESENTATION.VIEW.WIDGET.accessdb_pii_content_familije_view import AccessDB
 from PRESENTATION.VIEW.WIDGET.accessdb_pii_content_body_zone_view import AccessDBPIIContentBodyZoneView
 from PRESENTATION.VIEW.WIDGET.accessdb_pii_content_body_area_view import AccessDBPIIContentBodyAreaView
 
+from BUSINESS.MODEL.DOMAIN_OBJECT.line_excel_submition_do import LineExcelSubmitionDO
+
 from BUSINESS.SERVICE.APPLICATION_SERVICE.INTF.accessdb_pii_as_intf import AccessDBPIIASIntf
 from BUSINESS.SERVICE.APPLICATION_SERVICE.IMPL.accessdb_pii_as_impl import AccessDBPIIASImpl
 
@@ -260,20 +262,17 @@ class AccessDBPIIController:
     def launch_business_logic(self, zone_parameter: str, area_parameter: str) -> list:
         """
         STEP 1: Launching the READ process related to MFG data with the parameters required for.
+        STEP 2: Managing anything related to the Excel "Submition" file
         :param zone_parameter: The "Zone" parameter
         :param area_parameter: The "Area" parameter
         :return: The list of MFG Lines retrieved
         """
         try:
-            # STEP 1
+            # STEP 1 : Launching the READ process related to MFG data with the parameters required for.
             lines_mfg = self.get_accessdb_pii_as().read_mfg_data(zone_parameter, area_parameter)
             if lines_mfg:
-                for line_mfg in lines_mfg:
-                    print(line_mfg)
-                """
-                ... and then, let's manage the Excel for the "Sumbmition"
-                """
-                self.manage_excel_submition()
+                # STEP 2: Managing anything related to the Excel "Submition" file
+                self.manage_excel_submition(zone_parameter, lines_mfg)
             else:
                 LOGGER.info(
                     "No MFG line corresponding to parameters zone : \"" + zone_parameter + "\" and area : \""
@@ -287,6 +286,96 @@ class AccessDBPIIController:
             )
             raise
 
-    def manage_excel_submition(self):
-        # Just pass for the now, will be managed latter
-        pass
+    def manage_excel_submition(self, zone_parameter: str, lines_mfg: list):
+        """
+        STEP A: Generating a second list from the MFG lines list, where the new lines are the combination of the old
+        ones by their Category (Material);
+        :param zone_parameter: The "Zone" parameter chosen by the User through the sequence of GUIs
+        :param lines_mfg: The list of MFG lines READ from the MFG Table in the first DB
+        :return:
+        """
+        # STEP A: Generating a second list from the MFG lines list, where the new lines are the combination of the old
+        #          ones by their Category (Material);
+        try:
+            raw_lines_excel_submition = []
+            for line_mfg in lines_mfg:
+                line_excel_submition = LineExcelSubmitionDO()
+                line_excel_submition.set_category(line_mfg.get_material())
+                line_excel_submition.set_material_id(line_mfg.get_item())
+                line_excel_submition.set_quantity(line_mfg.get_quantity())
+                raw_lines_excel_submition.append(line_excel_submition)
+            # Categorizing each raw line of Excel Submition by their "Category"
+            raw_lines_aluminium = []
+            raw_lines_copper = []
+            raw_lines_plastic = []
+            raw_lines_terminal = []
+            raw_lines_harness = []
+            for line in raw_lines_excel_submition:
+                if line.get_category() == "Aluminijum":
+                    raw_lines_aluminium.append(line)
+                elif line.get_category() == "Bakar":
+                    raw_lines_copper.append(line)
+                elif line.get_category() == "Plastika":
+                    raw_lines_plastic.append(line)
+                elif line.get_category() == "Terminal":
+                    raw_lines_terminal.append(line)
+                elif line.get_category() == "Harness":
+                    raw_lines_harness.append(line)
+                else:
+                    # Category not (yet) recognized, hope will never end up here...
+                    msg_error = "Category of the line : \"" + line + "\" not (yet) recognized."
+                    LOGGER.error(msg_error)
+                    raise Exception(msg_error)
+            # Now, for each categorized raw lines of Excel Submition, let's combine the lines with the same
+            # "Material ID" into a single line
+            lines_aluminium = self.compress_categorized_raw_lines(raw_lines_aluminium)
+            lines_copper = self.compress_categorized_raw_lines(raw_lines_copper)
+            lines_plastic = self.compress_categorized_raw_lines(raw_lines_plastic)
+            lines_terminal = self.compress_categorized_raw_lines(raw_lines_terminal)
+            lines_harness = self.compress_categorized_raw_lines(raw_lines_harness)
+        except Exception as exception:
+            # At least one error has occurred, therefore, stop the process
+            LOGGER.error(
+                exception.__class__.__name__ + ": " + str(exception)
+                + ". Can't go further with the management process. "
+            )
+            raise
+
+    def compress_categorized_raw_lines(self, categorized_raw_lines: list) -> list:
+        """
+        Combining the Excel Submition lines with the same "Material ID" into a single line
+        :param categorized_raw_lines: The list of raw lines to be Compressed
+        :return: The compressed version of the list of raw lines provided in parameters
+        """
+        try:
+            compressed_list = []
+            category_id_marks = []
+            for line in categorized_raw_lines:
+                if line.get_material_id() in category_id_marks:
+                    # The line's material ID is already present within the current version of the compressed list
+                    current_compressed_list_element = [x for x in compressed_list
+                                                         if x.get_material_id() == line.get_material_id()][0]
+                    current_compressed_list_element_index = compressed_list.index(current_compressed_list_element)
+                    # adding the Quantities
+                    current_compressed_list_element.set_quantity(
+                        current_compressed_list_element.get_quantity() + line.get_quantity()
+                    )
+                    compressed_list[current_compressed_list_element_index] = current_compressed_list_element
+                else:
+                    # No line having the same material ID as the current one is already present within the current
+                    # version
+                    # of the compressed list, let's add it and mark it
+                    compressed_list.append(line)
+                    category_id_marks.append(line.get_material_id())
+            return compressed_list
+        except Exception as exception:
+            # At least one error has occurred, therefore, stop the process
+            LOGGER.error(
+                exception.__class__.__name__ + ": " + str(exception)
+                + ". Can't go further with the compressing process. "
+            )
+            raise
+
+
+
+
