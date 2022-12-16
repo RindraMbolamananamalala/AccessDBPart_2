@@ -309,6 +309,8 @@ class AccessDBPIIController:
         STEP A: Generating a second list from the MFG lines list, where the new lines are the combination of the old
         ones by their Category (Material);
         STEP B: Creating the Excel File for the "Submition"
+        STEP C: Inserting all the compressed categorized lines within the newly-created Excel file
+        STEP D: Printing the newly-fed Excel file
         :param zone_parameter: The "Zone" parameter chosen by the User through the sequence of GUIs
         :param area_parameter: The "Area" parameter chosen by the User through the sequence of GUIs
         :param lines_mfg: The list of MFG lines READ from the MFG Table in the first DB
@@ -375,6 +377,9 @@ class AccessDBPIIController:
             self.get_excel_as().insert_categorized_lines(
                 team, area_parameter, "Harness", lines_harness, excel_file_submition_path
             )
+
+            # STEP D: Printing the newly-fed Excel file
+            self.get_excel_as().print_excel_file(excel_file_submition_path)
         except Exception as exception:
             # At least one error has occurred, therefore, stop the process
             LOGGER.error(
