@@ -28,6 +28,8 @@ from BUSINESS.MODEL.DOMAIN_OBJECT.line_excel_submition_do import LineExcelSubmit
 
 from BUSINESS.SERVICE.APPLICATION_SERVICE.INTF.accessdb_pii_as_intf import AccessDBPIIASIntf
 from BUSINESS.SERVICE.APPLICATION_SERVICE.IMPL.accessdb_pii_as_impl import AccessDBPIIASImpl
+from BUSINESS.SERVICE.APPLICATION_SERVICE.INTF.excel_as_intf import ExcelASIntf
+from BUSINESS.SERVICE.APPLICATION_SERVICE.IMPL.excel_as_impl import ExcelASImpl
 
 
 class AccessDBPIIController:
@@ -62,6 +64,21 @@ class AccessDBPIIController:
         """
         return self.accessdb_pii_as
 
+    def set_excel_as(self, excel_as: ExcelASIntf):
+        """
+
+        :param excel_as: The Excel Application Service object to be used by the Controller.
+        :return:
+        """
+        self.excel_as = excel_as
+
+    def get_excel_as(self) -> ExcelASIntf:
+        """
+
+        :return: The Excel Application Service object used by the Controller.
+        """
+        return self.excel_as
+
     def set_current_main_window_content_view(self, current_main_window_content_view: AccessDBPIIContentView):
         """
 
@@ -83,6 +100,7 @@ class AccessDBPIIController:
 
         # Initializing all the ASs to be used by the Controller
         self.set_accessdb_pii_as(AccessDBPIIASImpl())
+        self.set_excel_as(ExcelASImpl())
 
         main_window_view = self.get_accessdb_pii_main_window_view()
 
@@ -290,6 +308,7 @@ class AccessDBPIIController:
         """
         STEP A: Generating a second list from the MFG lines list, where the new lines are the combination of the old
         ones by their Category (Material);
+        STEP B: Creating the Excel File for the "Submition"
         :param zone_parameter: The "Zone" parameter chosen by the User through the sequence of GUIs
         :param lines_mfg: The list of MFG lines READ from the MFG Table in the first DB
         :return:
@@ -333,6 +352,11 @@ class AccessDBPIIController:
             lines_plastic = self.compress_categorized_raw_lines(raw_lines_plastic)
             lines_terminal = self.compress_categorized_raw_lines(raw_lines_terminal)
             lines_harness = self.compress_categorized_raw_lines(raw_lines_harness)
+
+            # STEP B: Creating the Excel File for the "Submition" with the "Zone" parameter
+            excel_file_submition_path = self.get_excel_as().create_submition_excel_file(zone_parameter)
+            print("file_created =" + excel_file_submition_path)
+
         except Exception as exception:
             # At least one error has occurred, therefore, stop the process
             LOGGER.error(

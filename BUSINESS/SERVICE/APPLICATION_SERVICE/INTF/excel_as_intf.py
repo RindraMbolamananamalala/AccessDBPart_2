@@ -14,6 +14,15 @@ from abc import ABC, abstractmethod
 class ExcelASIntf(ABC):
 
     @abstractmethod
+    def create_submition_excel_file(self):
+        """
+        Creating the Excel file for the "Submition", naming it, storing it in the dedicated folder and then returning
+        its whole file path.
+        :return: The file path of the Excel file for the "Submition" newly-created.
+        """
+        pass
+
+    @abstractmethod
     def print_excel_file(self, excel_file_path: str):
         """
         Printing an Excel file whose path has been specified as an argument with the current (default) printer of
