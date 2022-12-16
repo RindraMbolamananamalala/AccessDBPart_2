@@ -11,8 +11,11 @@ __email__ = "rindraibi@gmail.com"
 import os
 import shutil
 import uuid
+import decimal
 
 from datetime import datetime
+
+from openpyxl import load_workbook
 
 from UTILS.project_utils import get_project_path
 
@@ -75,6 +78,92 @@ class ExcelASImpl(ExcelASIntf):
             )
             raise
 
+    def insert_categorized_lines(self, team: str
+                                        , area_parameter: str
+                                        , category: str
+                                        , categorized_lines: list
+                                        , excel_file_submition_path: str):
+        """
+        Inserting all the information corresponding to the Categorized Lines within the Excel File for the "Submition".
+        :param team: The "Team" parameter selected
+        :param area_parameter: The "Area" parameter selected
+        :param category: The Category (Material) concerned inside the Excel File
+        :param categorized_lines: The categorize lines to be inserted
+        :param excel_file_submition_path: The path leading to the Excel File for the Submition process
+        :return:
+        """
+        try:
+            # First, let's prepare the Insertion..
+            workbook = load_workbook(excel_file_submition_path)
+            worksheet = workbook["form_template_srb"]
+
+            # ... feeding static cells...
+            worksheet.cell(row=6, column=11).value = area_parameter
+            calendar_week = decimal.Decimal(
+                    str(datetime.today().isocalendar()[1])
+                    + "."
+                    + str(datetime.today().isocalendar()[2])
+                )
+            worksheet.cell(row=8, column=7).value = str(calendar_week)
+            worksheet.cell(row=10, column=7).value = team
+
+            # ... and then, let's specify the starting rows coordinates (within the Excel file) corresponding
+            # to each category...
+            if category == "Aluminium":
+                row_start = 19
+            elif category == "Copper":
+                row_start = 34
+            elif category == "Plastic":
+                row_start = 49
+            elif category == "Terminal":
+                row_start = 64
+            elif category == "Harness":
+                row_start = 79
+            else:
+                # Category not (yet) recognized, hope will never end up here...
+                msg_error = "Category: \"" + category + "\" not (yet) recognized."
+                LOGGER.error(msg_error)
+                raise Exception(msg_error)
+
+            # ... starting the determination of the other coordinates for the Insertion...
+            counter_line = 1
+            for line in categorized_lines:
+                if counter_line == 1:
+                    row_insertion = row_start
+                    col_material_id = 4
+                    col_quantity = 9
+                elif counter_line == 8:
+                    row_insertion = row_start
+                    col_material_id = 14
+                    col_quantity = 19
+                elif counter_line == 15:
+                    row_insertion = row_start
+                    col_material_id = 24
+                    col_quantity = 29
+                elif counter_line > 21:
+                    # Number of line exceeds the limitation (Automata's WELL)
+                    msg_error = "Number of lines: " + str(len(categorized_lines)) + " exceeds the limitation 21."
+                    LOGGER.error(msg_error)
+                    raise Exception(msg_error)
+                else:
+                    # Just pass, nothing really special...
+                    pass
+                # ... actual Insertion...
+                worksheet.cell(row=row_insertion, column=col_material_id).value = line.get_material_id()
+                worksheet.cell(row=row_insertion, column=col_quantity).value = line.get_quantity()
+                counter_line += 1
+                row_insertion += 1
+
+            # ... And finally, confirmation of all the actions related to the Insertion.
+            workbook.save(excel_file_submition_path)
+            workbook.close()
+        except Exception as exception:
+            # At least one error has occurred, therefore, stop the process
+            LOGGER.error(
+                exception.__class__.__name__ + ": " + str(exception)
+                + ". Can't go further with the Insertion Process. "
+            )
+            raise
 
     def print_excel_file(self, excel_file_path: str):
         """

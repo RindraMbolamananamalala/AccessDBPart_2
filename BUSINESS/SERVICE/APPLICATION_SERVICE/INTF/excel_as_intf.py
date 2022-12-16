@@ -23,6 +23,23 @@ class ExcelASIntf(ABC):
         pass
 
     @abstractmethod
+    def insert_categorized_lines(self, team: str
+                                        , area_parameter: str
+                                        , category: str
+                                        , categorized_lines: list
+                                        , excel_file_submition_path: str):
+        """
+        Inserting all the information corresponding to the Categorized Lines within the Excel File for the "Submition".
+        :param team: The "Team" parameter selected
+        :param area_parameter: The "Area" parameter selected
+        :param category: The Category (Material) concerned inside the Excel File
+        :param categorized_lines: The categorize lines to be inserted
+        :param excel_file_submition_path: The path leading to the Excel File for the Submition process
+        :return:
+        """
+        pass
+
+    @abstractmethod
     def print_excel_file(self, excel_file_path: str):
         """
         Printing an Excel file whose path has been specified as an argument with the current (default) printer of

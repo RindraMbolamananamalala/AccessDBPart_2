@@ -290,7 +290,7 @@ class AccessDBPIIController:
             lines_mfg = self.get_accessdb_pii_as().read_mfg_data(zone_parameter, area_parameter)
             if lines_mfg:
                 # STEP 2: Managing anything related to the Excel "Submition" file
-                self.manage_excel_submition(zone_parameter, lines_mfg)
+                self.manage_excel_submition(zone_parameter, area_parameter, lines_mfg)
             else:
                 LOGGER.info(
                     "No MFG line corresponding to parameters zone : \"" + zone_parameter + "\" and area : \""
@@ -304,15 +304,18 @@ class AccessDBPIIController:
             )
             raise
 
-    def manage_excel_submition(self, zone_parameter: str, lines_mfg: list):
+    def manage_excel_submition(self, zone_parameter: str, area_parameter: str, lines_mfg: list):
         """
         STEP A: Generating a second list from the MFG lines list, where the new lines are the combination of the old
         ones by their Category (Material);
         STEP B: Creating the Excel File for the "Submition"
         :param zone_parameter: The "Zone" parameter chosen by the User through the sequence of GUIs
+        :param area_parameter: The "Area" parameter chosen by the User through the sequence of GUIs
         :param lines_mfg: The list of MFG lines READ from the MFG Table in the first DB
         :return:
         """
+        # First, let's get the selected "Team"
+        team = self.get_accessdb_pii_main_window_view().get_corresponding_hmi().get_combo_box_teams().currentText()
         # STEP A: Generating a second list from the MFG lines list, where the new lines are the combination of the old
         #          ones by their Category (Material);
         try:
@@ -355,8 +358,23 @@ class AccessDBPIIController:
 
             # STEP B: Creating the Excel File for the "Submition" with the "Zone" parameter
             excel_file_submition_path = self.get_excel_as().create_submition_excel_file(zone_parameter)
-            print("file_created =" + excel_file_submition_path)
 
+            # STEP C: Inserting all the compressed categorized lines within the newly-created Excel file
+            self.get_excel_as().insert_categorized_lines(
+                team, area_parameter, "Aluminium", lines_aluminium, excel_file_submition_path
+            )
+            self.get_excel_as().insert_categorized_lines(
+                team, area_parameter, "Copper", lines_copper, excel_file_submition_path
+            )
+            self.get_excel_as().insert_categorized_lines(
+                team, area_parameter, "Plastic", lines_plastic, excel_file_submition_path
+            )
+            self.get_excel_as().insert_categorized_lines(
+                team, area_parameter, "Terminal", lines_terminal, excel_file_submition_path
+            )
+            self.get_excel_as().insert_categorized_lines(
+                team, area_parameter, "Harness", lines_harness, excel_file_submition_path
+            )
         except Exception as exception:
             # At least one error has occurred, therefore, stop the process
             LOGGER.error(
