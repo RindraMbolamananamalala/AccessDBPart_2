@@ -27,7 +27,6 @@ class AccessDBPIIView(object):
         """
         return self.corresponding_hmi
 
-
     def __init__(self):
         # Just pass, letting the child classes managing it
         pass
