@@ -10,6 +10,8 @@ from PRESENTATION.HMI.WIDGET.accessdb_pii_content_familije import AccessDBPIICon
 from PRESENTATION.HMI.FORM.form_weight_material_ui import FormWeightMaterialUI
 from PRESENTATION.HMI.FORM.form_weights_validation_ui import FormWeightsValidationUI
 
+from PRESENTATION.VIEW.FORM.form_weight_material_view import FormWeightMaterialView
+
 from PRESENTATION.CONTROLLER.accessdb_pii_controller import AccessDBPIIController
 
 if __name__ == '__main__':
@@ -33,10 +35,17 @@ if __name__ == '__main__':
     #
     # ui_main_window.set_content(content_zone)
 
-    controller = AccessDBPIIController()
+    """
+    PRE VALIDATION
+    """
+    # controller = AccessDBPIIController()
 
-    controller.get_accessdb_pii_main_window_view().get_corresponding_hmi().get_main_window().showMaximized()
+   # controller.get_accessdb_pii_main_window_view().get_corresponding_hmi().get_main_window().showMaximized()
+    """
+    PRE VALIDATION
+    """
 
+    form_weight_view = FormWeightMaterialView()
 
     # controller = CRUDFileController()
 

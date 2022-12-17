@@ -22,14 +22,15 @@ class FormWeightMaterialUI(AccessDBPIIHMI):
         Displaying the Form.
         :return:
         """
-        self.get_form_weigh_material().show()
+        self.get_form_weight_material().setFocus()
+        self.get_form_weight_material().show()
 
     def close_hmi(self):
         """
         Closing the From
         :return:
         """
-        self.get_form_weigh_material().close()
+        self.get_form_weight_material().close()
 
     def set_form_weight_material(self, form_weight_material: QWidget):
         """
@@ -46,6 +47,12 @@ class FormWeightMaterialUI(AccessDBPIIHMI):
         """
         return self.form_weight_material
 
+    def get_input_text_weight(self) -> QLineEdit:
+        return self.input_text_weight
+
+    def get_button_ok(self) -> QPushButton:
+        return self.button_ok
+
     def __init__(self, parent: QWidget):
         """
 
@@ -59,7 +66,7 @@ class FormWeightMaterialUI(AccessDBPIIHMI):
         self.set_form_weight_material(form_weight_material)
         if not form_weight_material.objectName():
             form_weight_material.setObjectName(u"form_weigh_material")
-        form_weight_material.resize(732, 314)
+        form_weight_material.setFixedSize(732, 314)
         form_weight_material.setStyleSheet(u"background-color: #d2d2d2;\n"
                                           "border-radius: 25px;")
         self.label_unesi_tezinu = QLabel(form_weight_material)
@@ -75,22 +82,28 @@ class FormWeightMaterialUI(AccessDBPIIHMI):
         self.label_material.setGeometry(QRect(180, 10, 191, 31))
         self.label_material.setFont(font)
         self.label_material.setStyleSheet(u"color: #1c2632;")
-        self.input_text_weight = QTextEdit(form_weight_material)
+        self.input_text_weight = QLineEdit(form_weight_material)
         self.input_text_weight.setObjectName(u"input_text_weigh")
         self.input_text_weight.setGeometry(QRect(140, 90, 431, 101))
-        self.input_text_weight.setStyleSheet("")
         font1 = QFont()
         font1.setFamily(u"Century Gothic")
         font1.setPointSize(25)
         self.input_text_weight.setFont(font1)
         self.input_text_weight.setAlignment(Qt.AlignCenter)
-        self.input_text_weight.textChanged.connect(self.format_weight_input)
+        input_text_wight_validator = QDoubleValidator()
+        input_text_wight_validator.setNotation(QDoubleValidator.StandardNotation)
+        input_text_wight_validator.setBottom(0.00)
+        input_text_wight_validator.setDecimals(2)
+        self.input_text_weight.setValidator(input_text_wight_validator)
+        # regularizing the text input
+        self.input_text_weight.textChanged.connect(self.regularize_weight_input)
         self.input_text_weight.setStyleSheet(u"border : 1px solid ; background-color: #e5e5e5;"
                                             "border-radius: 25px;\n"
                                             "border-color: #1c2632;")
         self.button_ok = QPushButton(form_weight_material)
         self.button_ok.setObjectName(u"button_ok")
         self.button_ok.setGeometry(QRect(270, 220, 171, 61))
+        self.button_ok.setCursor(Qt.PointingHandCursor)
         font2 = QFont()
         font2.setFamily(u"Century Gothic")
         font2.setPointSize(13)
@@ -104,19 +117,23 @@ class FormWeightMaterialUI(AccessDBPIIHMI):
         QMetaObject.connectSlotsByName(form_weight_material)
     # setupUi
 
-    def format_weight_input(self):
+    def regularize_weight_input(self):
         """
         Formatting the text provided by the User within the Input Text
         :return:
         """
-        width = self.input_text_weight.fontMetrics().width(self.input_text_weight.toPlainText())
-        self.input_text_weight.setMinimumWidth(width)
+        # If the text is a None one, replace it by 0,00
+        text_to_be_regularized = self.get_input_text_weight().text()
+        if len(text_to_be_regularized) < 1:
+            self.get_input_text_weight().setText("0,00")
+
+
 
     def retranslateUi(self, form_weigh_material):
         form_weigh_material.setWindowTitle(QCoreApplication.translate("form_weigh_material", u"Form", None))
         self.label_unesi_tezinu.setText(QCoreApplication.translate("form_weigh_material", u"Unesi tezinu za", None))
         self.label_material.setText(QCoreApplication.translate("form_weigh_material", u"bakar", None))
-        self.input_text_weight.setPlainText("")
+        self.input_text_weight.setPlaceholderText("kg")
         self.input_text_weight.setPlaceholderText(QCoreApplication.translate("form_weigh_material", u"kg", None))
         self.button_ok.setText(QCoreApplication.translate("form_weigh_material", u"OK", None))
     # retranslateUi
