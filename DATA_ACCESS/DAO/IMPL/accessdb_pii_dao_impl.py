@@ -96,7 +96,8 @@ class AccessDBPIIDAOImpl(AccessDBPIIDAOIntf):
             # No Line of MFG data has been retrieved, therefore, let's return an empty list
             LOGGER.info(
                 "No MFG line corresponding to parameters zone : \"" + zone_parameter
-                + "\" and area : \"" + area_parameter + "\"" + " has been found."
+                + "\" and area : \"" + area_parameter + "\"" + " has been found"
+                + " between " + str(time_stamp_min) + ":00 and " + str(time_stamp_max - 1) + ":59."
             )
             return []
         except Exception as exception:
