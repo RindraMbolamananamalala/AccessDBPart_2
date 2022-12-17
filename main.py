@@ -7,8 +7,8 @@ from PySide2.QtWidgets import *
 from PRESENTATION.HMI.WIDGET.accessdb_pii_content_zone import AccessDBPIIContentZone
 from PRESENTATION.HMI.WIDGET.access_db_pii_content_body_zone import AccessDBPIIContentBodyZone
 from PRESENTATION.HMI.WIDGET.accessdb_pii_content_familije import AccessDBPIIContentFamilije
-from PRESENTATION.HMI.FORM.form_weigh_material_ui import FormWeighMaterialUI
-from PRESENTATION.HMI.FORM.form_weighs_validation_ui import FormWeighsValidationUI
+from PRESENTATION.HMI.FORM.form_weight_material_ui import FormWeightMaterialUI
+from PRESENTATION.HMI.FORM.form_weights_validation_ui import FormWeightsValidationUI
 
 from PRESENTATION.CONTROLLER.accessdb_pii_controller import AccessDBPIIController
 

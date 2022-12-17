@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-form_weigh_validation.py: The python file dedicated to the implementation of the "Form"  dedicated to the Validation of
-a material's weighs by the User.
+form_weights_validation.py: The python file dedicated to the implementation of the "Form"  dedicated to the Validation
+of a material's weights by the User.
 """
 
 __author__ = "Rindra Mbolamananamalala"
@@ -15,43 +15,43 @@ from PySide2.QtWidgets import *
 from PRESENTATION.HMI.accessdb_pii_hmi import AccessDBPIIHMI
 
 
-class FormWeighsValidationUI(AccessDBPIIHMI):
+class FormWeightsValidationUI(AccessDBPIIHMI):
 
     def show_hmi(self):
         """
         Displaying the form
         :return:
         """
-        self.get_form_weighs_validation().show()
+        self.get_form_weights_validation().show()
 
-    def set_form_weighs_validation(self, form_weighs_validation: QWidget):
+    def set_form_weights_validation(self, form_weights_validation: QWidget):
         """
 
-        :param form_weighs_validation: The main Widget of the From
+        :param form_weights_validation: The main Widget of the From
         :return:
         """
-        self.form_weighs_validation = form_weighs_validation
+        self.form_weights_validation = form_weights_validation
 
-    def get_form_weighs_validation(self) -> QWidget:
+    def get_form_weights_validation(self) -> QWidget:
         """
 
         :return: The main Widget of the From
         """
-        return self.form_weighs_validation
+        return self.form_weights_validation
 
     def __init__(self, parent: QWidget):
         # First, let's call the Superclass' __init__() function
-        super(FormWeighsValidationUI, self).__init__()
+        super(FormWeightsValidationUI, self).__init__()
 
         # Then, let's set up the current Form
-        form_weighs_validation = QWidget(parent)
-        self.set_form_weighs_validation(form_weighs_validation)
-        if not form_weighs_validation.objectName():
-            form_weighs_validation.setObjectName(u"Form")
-        form_weighs_validation.resize(732, 526)
-        form_weighs_validation.setStyleSheet(u"background-color: #d2d2d2;\n"
+        form_weights_validation = QWidget(parent)
+        self.set_form_weights_validation(form_weights_validation)
+        if not form_weights_validation.objectName():
+            form_weights_validation.setObjectName(u"Form")
+        form_weights_validation.resize(732, 526)
+        form_weights_validation.setStyleSheet(u"background-color: #d2d2d2;\n"
                                              "border-radius: 25px;")
-        self.label_finalna_potvrda = QLabel(form_weighs_validation)
+        self.label_finalna_potvrda = QLabel(form_weights_validation)
         self.label_finalna_potvrda.setObjectName(u"label_finalna_potvrda")
         self.label_finalna_potvrda.setGeometry(QRect(10, 10, 181, 31))
         font = QFont()
@@ -61,7 +61,7 @@ class FormWeighsValidationUI(AccessDBPIIHMI):
         font.setWeight(50)
         self.label_finalna_potvrda.setFont(font)
         self.label_finalna_potvrda.setStyleSheet(u"color: #1c2632;")
-        self.label_aluminijium = QLabel(form_weighs_validation)
+        self.label_aluminijium = QLabel(form_weights_validation)
         self.label_aluminijium.setObjectName(u"label_aluminijium")
         self.label_aluminijium.setGeometry(QRect(30, 70, 211, 51))
         font1 = QFont()
@@ -69,7 +69,7 @@ class FormWeighsValidationUI(AccessDBPIIHMI):
         font1.setPointSize(25)
         self.label_aluminijium.setFont(font1)
         self.label_aluminijium.setStyleSheet(u"color: #1c2632;")
-        self.text_aluminijium = QTextEdit(form_weighs_validation)
+        self.text_aluminijium = QTextEdit(form_weights_validation)
         self.text_aluminijium.setObjectName(u"text_aluminijium")
         self.text_aluminijium.setGeometry(QRect(260, 70, 271, 51))
         font2 = QFont()
@@ -80,12 +80,12 @@ class FormWeighsValidationUI(AccessDBPIIHMI):
                                             "border-radius: 10px;\n"
                                             "border-color: #1c2632;\n"
                                             "background-color: #e5e5e5;")
-        self.label_bakar = QLabel(form_weighs_validation)
+        self.label_bakar = QLabel(form_weights_validation)
         self.label_bakar.setObjectName(u"label_bakar")
         self.label_bakar.setGeometry(QRect(30, 140, 211, 51))
         self.label_bakar.setFont(font1)
         self.label_bakar.setStyleSheet(u"color: #1c2632;")
-        self.text_bakar = QTextEdit(form_weighs_validation)
+        self.text_bakar = QTextEdit(form_weights_validation)
         self.text_bakar.setObjectName(u"text_bakar")
         self.text_bakar.setGeometry(QRect(260, 140, 271, 51))
         self.text_bakar.setFont(font2)
@@ -93,17 +93,17 @@ class FormWeighsValidationUI(AccessDBPIIHMI):
                                       "border-radius: 10px;\n"
                                       "border-color: #1c2632;\n"
                                       "background-color: #e5e5e5;")
-        self.label_terminali = QLabel(form_weighs_validation)
+        self.label_terminali = QLabel(form_weights_validation)
         self.label_terminali.setObjectName(u"label_terminali")
         self.label_terminali.setGeometry(QRect(30, 280, 211, 51))
         self.label_terminali.setFont(font1)
         self.label_terminali.setStyleSheet(u"color: #1c2632;")
-        self.label_plastika = QLabel(form_weighs_validation)
+        self.label_plastika = QLabel(form_weights_validation)
         self.label_plastika.setObjectName(u"label_plastika")
         self.label_plastika.setGeometry(QRect(30, 210, 211, 51))
         self.label_plastika.setFont(font1)
         self.label_plastika.setStyleSheet(u"color: #1c2632;")
-        self.text_plastika = QTextEdit(form_weighs_validation)
+        self.text_plastika = QTextEdit(form_weights_validation)
         self.text_plastika.setObjectName(u"text_plastika")
         self.text_plastika.setGeometry(QRect(260, 210, 271, 51))
         self.text_plastika.setFont(font2)
@@ -111,7 +111,7 @@ class FormWeighsValidationUI(AccessDBPIIHMI):
                                          "border-radius: 10px;\n"
                                          "border-color: #1c2632;\n"
                                          "background-color: #e5e5e5;")
-        self.text_terminali = QTextEdit(form_weighs_validation)
+        self.text_terminali = QTextEdit(form_weights_validation)
         self.text_terminali.setObjectName(u"text_terminali")
         self.text_terminali.setGeometry(QRect(260, 280, 271, 51))
         self.text_terminali.setFont(font2)
@@ -119,7 +119,7 @@ class FormWeighsValidationUI(AccessDBPIIHMI):
                                           "border-radius: 10px;\n"
                                           "border-color: #1c2632;\n"
                                           "background-color: #e5e5e5;")
-        self.text_harness = QTextEdit(form_weighs_validation)
+        self.text_harness = QTextEdit(form_weights_validation)
         self.text_harness.setObjectName(u"text_harness")
         self.text_harness.setGeometry(QRect(260, 350, 271, 51))
         self.text_harness.setFont(font2)
@@ -127,12 +127,12 @@ class FormWeighsValidationUI(AccessDBPIIHMI):
                                         "border-radius: 10px;\n"
                                         "border-color: #1c2632;\n"
                                         "background-color: #e5e5e5;")
-        self.label_harness = QLabel(form_weighs_validation)
+        self.label_harness = QLabel(form_weights_validation)
         self.label_harness.setObjectName(u"label_harness")
         self.label_harness.setGeometry(QRect(30, 350, 211, 51))
         self.label_harness.setFont(font1)
         self.label_harness.setStyleSheet(u"color: #1c2632;")
-        self.button_ok = QPushButton(form_weighs_validation)
+        self.button_ok = QPushButton(form_weights_validation)
         self.button_ok.setObjectName(u"button_ok")
         self.button_ok.setGeometry(QRect(170, 430, 171, 61))
         font3 = QFont()
@@ -142,7 +142,7 @@ class FormWeighsValidationUI(AccessDBPIIHMI):
         self.button_ok.setStyleSheet(u"border-radius: 25px;\n"
                                      "background-color: #1c2632;\n"
                                      "color: #d2d2d2;")
-        self.button_nazad = QPushButton(form_weighs_validation)
+        self.button_nazad = QPushButton(form_weights_validation)
         self.button_nazad.setObjectName(u"button_nazad")
         self.button_nazad.setGeometry(QRect(400, 430, 171, 61))
         self.button_nazad.setFont(font3)
@@ -150,9 +150,9 @@ class FormWeighsValidationUI(AccessDBPIIHMI):
                                         "background-color: #1c2632;\n"
                                         "color: #d2d2d2;")
 
-        self.retranslateUi(form_weighs_validation)
+        self.retranslateUi(form_weights_validation)
 
-        QMetaObject.connectSlotsByName(form_weighs_validation)
+        QMetaObject.connectSlotsByName(form_weights_validation)
     # setupUi
 
     def retranslateUi(self, Form):
