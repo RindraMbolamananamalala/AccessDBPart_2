@@ -38,14 +38,12 @@ if __name__ == '__main__':
     """
     PRE VALIDATION
     """
-    # controller = AccessDBPIIController()
+    controller = AccessDBPIIController()
 
-   # controller.get_accessdb_pii_main_window_view().get_corresponding_hmi().get_main_window().showMaximized()
+    controller.get_accessdb_pii_main_window_view().get_corresponding_hmi().get_main_window().showMaximized()
     """
     PRE VALIDATION
     """
-
-    form_weight_view = FormWeightMaterialView()
 
     # controller = CRUDFileController()
 

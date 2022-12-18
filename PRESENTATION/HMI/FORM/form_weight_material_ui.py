@@ -47,6 +47,9 @@ class FormWeightMaterialUI(AccessDBPIIHMI):
         """
         return self.form_weight_material
 
+    def get_label_material(self) -> QLabel:
+        return self.label_material
+
     def get_input_text_weight(self) -> QLineEdit:
         return self.input_text_weight
 
@@ -119,7 +122,7 @@ class FormWeightMaterialUI(AccessDBPIIHMI):
 
     def regularize_weight_input(self):
         """
-        Formatting the text provided by the User within the Input Text
+        Regularizing the format of the text provided by the User within the Input Text
         :return:
         """
         # If the text is a None one, replace it by 0,00
@@ -132,7 +135,6 @@ class FormWeightMaterialUI(AccessDBPIIHMI):
     def retranslateUi(self, form_weigh_material):
         form_weigh_material.setWindowTitle(QCoreApplication.translate("form_weigh_material", u"Form", None))
         self.label_unesi_tezinu.setText(QCoreApplication.translate("form_weigh_material", u"Unesi tezinu za", None))
-        self.label_material.setText(QCoreApplication.translate("form_weigh_material", u"bakar", None))
         self.input_text_weight.setPlaceholderText("kg")
         self.input_text_weight.setPlaceholderText(QCoreApplication.translate("form_weigh_material", u"kg", None))
         self.button_ok.setText(QCoreApplication.translate("form_weigh_material", u"OK", None))

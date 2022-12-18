@@ -19,12 +19,18 @@ from PRESENTATION.VIEW.accessdb_pii_view import AccessDBPIIView
 
 class FormWeightMaterialView(AccessDBPIIView):
 
-    def __init__(self):
+    def __init__(self, material: str):
+        """
+
+        :param material: The Material currently concerned by the Weight precision.
+        """
         #  First, let's call the Superclass' __init__() function
         super(FormWeightMaterialView, self).__init__()
 
-        # Then, let's assign an instance of From Weight Material UI as the GUI corresponding to the current view
+        # Then, let's assign an instance of Form Weight Material UI with the Material concerned  as the
+        # GUI corresponding to the current view
         self.set_corresponding_hmi(FormWeightMaterialUI(None))
+        self.get_corresponding_hmi().get_label_material().setText(material)
         self.get_corresponding_hmi().show_hmi()
 
         # At the beginning, the "Button OK" is disabled and is waiting for a valid Weight text input by the User to
