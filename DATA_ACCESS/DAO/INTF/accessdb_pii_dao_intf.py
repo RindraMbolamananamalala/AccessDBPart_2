@@ -10,7 +10,7 @@ __email__ = "rindraibi@gmail.com"
 
 from abc import ABC, abstractmethod
 
-from datetime import datetime
+from BUSINESS.MODEL.DOMAIN_OBJECT.line_weights_do import LineWeightsDO
 
 
 class AccessDBPIIDAOIntf(ABC):
@@ -23,4 +23,13 @@ class AccessDBPIIDAOIntf(ABC):
         :return: The list of MFG's lines filtered
         """
         return
+
+    @abstractmethod
+    def save_weights_line(self, weights_line: LineWeightsDO):
+        """
+        Saving a Line of Weights into DB
+        :param weights_line: The Line of Weights object to be saved
+        :return:
+        """
+        pass
 

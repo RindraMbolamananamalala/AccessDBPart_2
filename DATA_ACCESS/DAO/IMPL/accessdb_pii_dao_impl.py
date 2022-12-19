@@ -1,12 +1,18 @@
+
+import decimal
+
 from datetime import datetime
 
 from sqlalchemy import and_, or_, extract
 
+
 from CONFIGURATIONS.logger import LOGGER
-from CONFIGURATIONS.application_properties import get_application_property
+
 
 from BUSINESS.MODEL.DOMAIN_OBJECT.line_mfg_do import LineMFGDO
+from BUSINESS.MODEL.DOMAIN_OBJECT.line_weights_do import LineWeightsDO
 from BUSINESS.MODEL.ENTITY.line_mfg import LineMFG
+from BUSINESS.MODEL.ENTITY.line_weights import LineWeights
 
 from DATA_ACCESS.data_access_base import Session
 
@@ -107,3 +113,39 @@ class AccessDBPIIDAOImpl(AccessDBPIIDAOIntf):
                 + ". Can't go further with the Retrieval Process. "
             )
             raise
+
+    def save_weights_line(self, weights_line: LineWeightsDO):
+        """
+        Saving a Line of Weights into DB
+        :param weights_line: The Line of Weights object to be saved
+        :return:
+        """
+        try:
+            line_to_be_saved = LineWeights()
+            line_to_be_saved.date_time = datetime.today()
+            line_to_be_saved.area = weights_line.get_area()
+            line_to_be_saved.aluminium = weights_line.get_aluminium_weight()
+            line_to_be_saved.copper = weights_line.get_copper_weight()
+            line_to_be_saved.plastic = weights_line.get_plastic_weight()
+            line_to_be_saved.terminal = weights_line.get_terminal_weight()
+            line_to_be_saved.harness = weights_line.get_harness_weight()
+            line_to_be_saved.team = weights_line.get_team()
+            line_to_be_saved.calendar_week = decimal.Decimal(
+                    str(datetime.today().isocalendar()[1])
+                    + "."
+                    + str(datetime.today().isocalendar()[2])
+                )
+            with Session() as session:
+                session.add(line_to_be_saved)
+                session.commit()
+        except Exception as exception:
+            # At least one error has occurred, therefore, stop the process
+            LOGGER.error(
+                exception.__class__.__name__ + ": " + str(exception)
+                + ". Can't go further with the Writing Process. "
+            )
+            raise
+
+
+
+

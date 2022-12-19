@@ -8,10 +8,10 @@ implemented within the "BUSINESS" layer of the Project, and at the same time one
 __author__ = "Rindra Mbolamananamalala"
 __email__ = "rindraibi@gmail.com"
 
-from BUSINESS.MODEL.DOMAIN_OBJECT.access_db_do import AccessDBDO
+from BUSINESS.MODEL.DOMAIN_OBJECT.accessdb_pii_do import AccessDBPIIDO
 
 
-class LineExcelSubmitionDO(AccessDBDO):
+class LineExcelSubmitionDO(AccessDBPIIDO):
 
     def set_category(self, category: str):
         self.category = category
