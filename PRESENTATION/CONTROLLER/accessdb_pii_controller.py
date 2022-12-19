@@ -24,6 +24,8 @@ from PRESENTATION.VIEW.WIDGET.accessdb_pii_content_familije_view import AccessDB
 from PRESENTATION.VIEW.WIDGET.accessdb_pii_content_body_zone_view import AccessDBPIIContentBodyZoneView
 from PRESENTATION.VIEW.WIDGET.accessdb_pii_content_body_area_view import AccessDBPIIContentBodyAreaView
 
+from PRESENTATION.VIEW.FORM.form_weight_material_view import FormWeightMaterialView
+
 from BUSINESS.MODEL.DOMAIN_OBJECT.line_excel_submition_do import LineExcelSubmitionDO
 
 from BUSINESS.SERVICE.APPLICATION_SERVICE.INTF.accessdb_pii_as_intf import AccessDBPIIASIntf
@@ -94,6 +96,42 @@ class AccessDBPIIController:
         """
         return self.current_main_window_content_view
 
+    def set_forms_weights_materials_views(self, forms_weights_materials_views: list):
+        self.forms_weights_materials_views = forms_weights_materials_views
+
+    def get_forms_weights_materials_views(self) -> list:
+        return self.forms_weights_materials_views
+
+    def set_current_weight_category(self, current_weight_category: str):
+        """
+
+        :param current_weight_category: The Current Category of weight whose corresponding Form is opened for recording
+        :return:
+        """
+        self.current_weight_category = current_weight_category
+
+    def get_current_weight_category(self):
+        """
+
+        :return: The Current Category of weight whose corresponding Form is opened for recording
+        """
+        return self.current_weight_category
+
+    def set_current_recorded_weights(self, current_recorded_weighs: list):
+        """
+
+        :param current_recorded_weighs: The list corresponding to the Weights currently recorded thanks to the Forms
+        :return: None
+        """
+        self.current_recorded_weighs = current_recorded_weighs
+
+    def get_current_recorded_weighs(self):
+        """
+
+        :return: The list corresponding to the Weights currently recorded thanks to the Forms
+        """
+        return self.current_recorded_weighs
+
     def __init__(self):
         # Initializing the AccessDB Part II's Main Window's VIEW
         self.set_accessdb_pii_main_window_view(AccessDBPIIMainWindowView())
@@ -101,6 +139,24 @@ class AccessDBPIIController:
         # Initializing all the ASs to be used by the Controller
         self.set_accessdb_pii_as(AccessDBPIIASImpl())
         self.set_excel_as(ExcelASImpl())
+
+        # Initializing all the VIEWs of the Forms related to the Weighs specification of all the Categories
+        self.set_forms_weights_materials_views([])
+        """
+        List of Category
+        # Category 1 : Aluminium
+        # Category 2 : Copper
+        # Category 3 : Plastic
+        # Category 4 : Terminal
+        # Category 5 : Harness
+        """
+        self.categories_labels = ["Aluminijum", "Bakar", "Plastika", "Terminal", "Harness"]
+        for category in self.categories_labels:
+            self.get_forms_weights_materials_views().append(FormWeightMaterialView(category))
+        self.category_counter = 0
+
+        # Initializing the list corresponding to the Weights currently recorded with an Empty list
+        self.set_current_recorded_weights([])
 
         main_window_view = self.get_accessdb_pii_main_window_view()
 
@@ -153,6 +209,12 @@ class AccessDBPIIController:
                 .get_content_body_area_options()
             for button in content_body_area_options:
                 button.clicked.connect(partial(self.pass_content_area_zone, button))
+
+        # When the "Button OK" of any Form for the Weight recording corresponding to the Category (Material)
+        # is clicked, save the Input Text as the chosen Weight and pass to the next Form
+        for view in self.get_forms_weights_materials_views():
+            current_hmi = view.get_corresponding_hmi()
+            current_hmi.get_button_ok().clicked.connect(partial(self.pass_form_weight, current_hmi.get_label_material().text()))
 
     def pass_content_zone(self, button: QPushButton):
         """
@@ -286,11 +348,14 @@ class AccessDBPIIController:
         :return: The list of MFG Lines retrieved
         """
         try:
-            # STEP 1 : Launching the READ process related to MFG data with the parameters required for.
+            # STEP 1: Launching the READ process related to MFG data with the parameters required for.
             lines_mfg = self.get_accessdb_pii_as().read_mfg_data(zone_parameter, area_parameter)
             if lines_mfg:
                 # STEP 2: Managing anything related to the Excel "Submition" file
                 self.manage_excel_submition(zone_parameter, area_parameter, lines_mfg)
+
+                # STEP 3: Launching the Weight recording for each Category
+                self.launch_weights_recordings()
             else:
                 LOGGER.info(
                     "No MFG line corresponding to parameters zone : \"" + zone_parameter + "\" and area : \""
@@ -422,6 +487,87 @@ class AccessDBPIIController:
                 + ". Can't go further with the compressing process. "
             )
             raise
+
+    def launch_weights_recordings(self):
+        """
+        Launching the recording of Weights related to all the different Categories
+        :return: None
+        """
+        # The recording of Weights starts with the Aluminium-related One
+        self.set_current_weight_category(self.categories_labels[0])
+        self.get_forms_weights_materials_views()[0].get_corresponding_hmi().show_hmi()
+
+    def pass_form_weight(self, category: str):
+        """
+        Managing the transition between the Forms in charge of the Categories' Weights recording process
+        :param category: The current category being processed
+        :return: None
+        """
+        try:
+            if category == self.categories_labels[0]:
+                self.load_next_form_weight(0)
+            elif category == self.categories_labels[1]:
+                self.load_next_form_weight(1)
+            elif category == self.categories_labels[2]:
+                self.load_next_form_weight(2)
+            elif category == self.categories_labels[3]:
+                self.load_next_form_weight(3)
+            elif category == self.categories_labels[4]:
+                """
+                Do not pass to a Form Weight anymore, instead we need to pass to the Validations of all the Weights
+                by opening the corresponding Form,...
+                """
+                # ... but first, we still need to record the Weight entered by the User
+                old_current_form_ui = self.get_forms_weights_materials_views()[4].get_corresponding_hmi()
+                weight_entered = old_current_form_ui.get_input_text_weight().text()
+                # In order to avoid redundancy of data recorded
+                if len(self.get_current_recorded_weighs()) <= 4:
+                    self.get_current_recorded_weighs().append(weight_entered)
+                else:
+                    self.get_current_recorded_weighs()[4] = weight_entered
+                old_current_form_ui.close_hmi()
+                """
+                TEMPORARY, WILL BE MANAGED SERIOUSLY LATTER
+                """
+                print(self.get_current_recorded_weighs())
+        except Exception as exception:
+            # At least one error has occurred, therefore, stop the process
+            LOGGER.error(
+                exception.__class__.__name__ + ": " + str(exception)
+                + ". Can't go further with the Recording process. "
+            )
+            raise
+
+    def load_next_form_weight(self, current_form_weight_index: int):
+        """
+        Loading the next Form for Weight recording from the current one.
+        :param current_form_weight_index:  The index of the current Form in the pecific list
+        :return: None
+        """
+        try:
+            old_current_form_ui = self.get_forms_weights_materials_views()[current_form_weight_index].get_corresponding_hmi()
+            # Recording the Weight entered by the User
+            weight_entered = old_current_form_ui.get_input_text_weight().text()
+            if len(self.get_current_recorded_weighs()) <= current_form_weight_index:
+                self.get_current_recorded_weighs().append(weight_entered)
+            else:
+                self.get_current_recorded_weighs()[current_form_weight_index] = weight_entered
+            # Closing the old current Form
+            old_current_form_ui.close_hmi()
+            # Loading the new Form
+            new_current_form_ui = self.get_forms_weights_materials_views()[current_form_weight_index + 1].get_corresponding_hmi()
+            new_current_form_ui.show_hmi()
+            self.set_current_weight_category(self.categories_labels[current_form_weight_index + 1])
+        except Exception as exception:
+            # At least one error has occurred, therefore, stop the process
+            LOGGER.error(
+                exception.__class__.__name__ + ": " + str(exception)
+                + ". Can't go further with the Recording process. "
+            )
+            raise
+
+
+
 
 
 

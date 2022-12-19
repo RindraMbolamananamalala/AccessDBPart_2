@@ -31,7 +31,6 @@ class FormWeightMaterialView(AccessDBPIIView):
         # GUI corresponding to the current view
         self.set_corresponding_hmi(FormWeightMaterialUI(None))
         self.get_corresponding_hmi().get_label_material().setText(material)
-        self.get_corresponding_hmi().show_hmi()
 
         # At the beginning, the "Button OK" is disabled and is waiting for a valid Weight text input by the User to
         # be enabled
