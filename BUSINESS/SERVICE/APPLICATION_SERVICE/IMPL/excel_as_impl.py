@@ -49,6 +49,45 @@ def generate_name_for_submition_excel_file(zone_parameter: str) -> str:
         raise
 
 
+def get_current_shift() -> int:
+    """
+    In function of the current time and the 3 different Time Stamps, determining the current Shift
+    :return: The current Shift
+    """
+    try:
+        # Retrieving all the Time Stamps
+        time_stamp_1_min = int(get_application_property("time_stamp_1").split(",")[0])
+        time_stamp_1_max = int(get_application_property("time_stamp_1").split(",")[1])
+        time_stamp_2_min = int(get_application_property("time_stamp_2").split(",")[0])
+        time_stamp_2_max = int(get_application_property("time_stamp_2").split(",")[1])
+        time_stamp_3_min = int(get_application_property("time_stamp_3").split(",")[0])
+        time_stamp_3_max = int(get_application_property("time_stamp_3").split(",")[1])
+        # First, let's get the current Time Stamp
+        current_hour = datetime.today().hour
+        if time_stamp_1_min <= current_hour < time_stamp_1_max:
+            # Shift 1
+            return 1
+        elif time_stamp_2_min <= current_hour < time_stamp_2_max:
+            # Shift 2
+            return 2
+        elif current_hour >= time_stamp_3_min or current_hour < time_stamp_3_max:
+            # Shift 3
+            return 3
+        else:
+            # Should never end up here...
+            msg_error = "Impossible to find a Shift for Current Hour : \"" + str(
+                datetime.today().time()) + "\""
+            LOGGER.error(msg_error)
+            raise Exception(msg_error)
+    except Exception as exception:
+        # At least one error has occurred, therefore, stop the process
+        LOGGER.error(
+            exception.__class__.__name__ + ": " + str(exception)
+            + ". Can't go further with the Shift determination Process. "
+        )
+        raise
+
+
 class ExcelASImpl(ExcelASIntf):
 
     def create_submition_excel_file(self, zone_parameter: str) -> str:
@@ -104,7 +143,9 @@ class ExcelASImpl(ExcelASIntf):
                     + "."
                     + str(datetime.today().isocalendar()[2])
                 )
-            worksheet.cell(row=8, column=7).value = str(calendar_week)
+            worksheet.cell(row=8, column=7).value = str(calendar_week) \
+                                                    + "." \
+                                                    + str(get_current_shift())
             worksheet.cell(row=10, column=7).value = team
 
             # ... and then, let's specify the starting rows coordinates (within the Excel file) corresponding
