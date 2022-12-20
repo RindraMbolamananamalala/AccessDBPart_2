@@ -5,6 +5,7 @@ from datetime import datetime
 from sqlalchemy import and_, or_, extract
 
 from CONFIGURATIONS.logger import LOGGER
+from CONFIGURATIONS.application_properties import get_application_property
 
 from BUSINESS.MODEL.DOMAIN_OBJECT.line_mfg_do import LineMFGDO
 from BUSINESS.MODEL.DOMAIN_OBJECT.line_weights_do import LineWeightsDO
@@ -21,23 +22,31 @@ class AccessDBPIIDAOImpl(AccessDBPIIDAOIntf):
     def get_mfg_lines(self, zone_parameter: str, area_parameter: str) -> list:
         """
         This function will return the list of MFG Lines when taking into account, a "Zone" and an "Area" filter, and a
-        "Time" filter: [06:00 - 14:00[, [14:00 - 22:00[, [22:00 - 06:00[
+        "Time" filter: [time_stamp_1_min:00 - time_stamp_1_max:00[, [time_stamp_2_min:00 - time_stamp_2_max:00[
+        , [time_stamp_3_min:00 - time_stamp_3_max:00[
         :param zone_parameter: The "Zone" parameter to be used for the filtering of the MFG's lines to be read
         :param area_parameter: The "Area" parameter to be used for the filtering of the MFG's lines to be read
         :return: The Entity list of MFG's lines filtered
         """
         try:
+            # Retrieving all the Time Stamps
+            time_stamp_1_min = int(get_application_property("time_stamp_1").split(",")[0])
+            time_stamp_1_max = int(get_application_property("time_stamp_1").split(",")[1])
+            time_stamp_2_min = int(get_application_property("time_stamp_2").split(",")[0])
+            time_stamp_2_max = int(get_application_property("time_stamp_2").split(",")[1])
+            time_stamp_3_min = int(get_application_property("time_stamp_3").split(",")[0])
+            time_stamp_3_max = int(get_application_property("time_stamp_3").split(",")[1])
             # First, let's get the current Time Stamp
             current_hour = datetime.today().hour
-            if 6 <= current_hour < 14:
-                time_stamp_min = 6
-                time_stamp_max = 14
-            elif 14 <= current_hour < 22:
-                time_stamp_min = 14
-                time_stamp_max = 22
-            elif current_hour >= 22 or current_hour < 6:
-                time_stamp_min = 22
-                time_stamp_max = 6
+            if time_stamp_1_min <= current_hour < time_stamp_1_max:
+                time_stamp_min = time_stamp_1_min
+                time_stamp_max = time_stamp_1_max
+            elif time_stamp_2_min <= current_hour < time_stamp_2_max:
+                time_stamp_min = time_stamp_2_min
+                time_stamp_max = time_stamp_2_max
+            elif current_hour >= time_stamp_3_min or current_hour < time_stamp_3_max:
+                time_stamp_min = time_stamp_3_min
+                time_stamp_max = time_stamp_3_max
             else:
                 # Should never end up here...
                 msg_error = "Impossible to find a Time Stamp for Current Hour : \"" + str(
@@ -47,7 +56,7 @@ class AccessDBPIIDAOImpl(AccessDBPIIDAOIntf):
 
             # Now, it's time to fetch the data with the different Filters
             with Session() as session:
-                if not (time_stamp_min == 22):
+                if not (time_stamp_min == time_stamp_3_min):
                     # It's not the Night..
                     results = session.query(LineMFG).filter(
                         and_(
