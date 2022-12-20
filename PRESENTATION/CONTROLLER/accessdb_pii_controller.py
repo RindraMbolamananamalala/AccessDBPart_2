@@ -271,12 +271,19 @@ class AccessDBPIIController:
                 partial(self.pass_form_weight, current_hmi.get_label_material().text())
             )
 
-        # When the "Button OK" of the Form for the Weights validation is clicked, proceed to the saving
-        # of all the weights in DB and close the Form at the end of it
-        form_weights_validation = self.get_form_weights_validation_view().get_corresponding_hmi()
-        self.get_form_weights_validation_view().get_corresponding_hmi().get_button_ok().clicked.connect(
-                self.save_weights
-        )
+        form_weights_validation_view_ui = self.get_form_weights_validation_view().get_corresponding_hmi()
+        if form_weights_validation_view_ui.get_form_weights_validation().isVisible():
+            # When the "Button OK" of the Form for the Weights validation is clicked, proceed to the saving
+            # of all the weights in DB and close the Form at the end of it
+            form_weights_validation_view_ui.get_button_ok().clicked.connect(
+                    self.save_weights
+            )
+
+            # When the "Button Nazad" of the Form for the Weights validation is clicked, go back to the
+            # Aluminijum-related Form for another series of Weights insertion
+            form_weights_validation_view_ui.get_button_nazad().clicked.connect(
+                self.restart_weights_insertion
+            )
 
     def pass_content_zone(self, button: QPushButton):
         """
@@ -736,6 +743,31 @@ class AccessDBPIIController:
                 + ". Can't go further with the Re-Start process. "
             )
             raise
+
+    def restart_weights_insertion(self):
+        """
+        Re-starting the process of Weights insertion corresponding to the different Categories (Materials)
+        :return: None
+        """
+        try:
+            # First of all, let's clear all the Insertion areas of all the Forms
+            for view in self.get_forms_weights_materials_views():
+                view.get_corresponding_hmi().get_input_text_weight().clear()
+
+            # Now, let's close the Form for the Weights confirmation
+            self.get_form_weights_validation_view().get_corresponding_hmi().close_hmi()
+
+            # Finally, let's (re-)launching the Weights insertion
+            self.launch_weights_recordings()
+        except Exception as exception:
+            # At least one error has occurred, therefore, stop the process
+            LOGGER.error(
+                exception.__class__.__name__ + ": " + str(exception)
+                + ". Can't go further with the Re-Launch process. "
+            )
+            raise
+
+
 
 
 
