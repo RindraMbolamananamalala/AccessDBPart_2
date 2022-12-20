@@ -10,6 +10,7 @@ __email__ = "rindraibi@gmail.com"
 
 from abc import ABC, abstractmethod
 
+from BUSINESS.MODEL.DOMAIN_OBJECT.line_weights_do import LineWeightsDO
 
 class AccessDBPIIASIntf(ABC):
 
@@ -20,5 +21,14 @@ class AccessDBPIIASIntf(ABC):
         :param zone_parameter: The "Zone" parameter
         :param area_parameter: The "Area" parameter
         :return: The list of all the MFG Lines corresponding to the parameters provided
+        """
+        pass
+
+    @abstractmethod
+    def save_line_weights(self, line_weights: LineWeightsDO):
+        """
+        Saving in DB the Line Weights DO specified as a parameter
+        :param line_weights: The Line Weights DO to be saved
+        :return: None
         """
         pass

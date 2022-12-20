@@ -10,11 +10,13 @@ __email__ = "rindraibi@gmail.com"
 
 from functools import partial
 
+import decimal
 from PySide2.QtCore import *
 from PySide2.QtGui import *
 from PySide2.QtWidgets import *
 
 from CONFIGURATIONS.logger import LOGGER
+
 
 from PRESENTATION.VIEW.accessdb_pii_main_window_view import AccessDBPIIMainWindowView
 
@@ -25,8 +27,11 @@ from PRESENTATION.VIEW.WIDGET.accessdb_pii_content_body_zone_view import AccessD
 from PRESENTATION.VIEW.WIDGET.accessdb_pii_content_body_area_view import AccessDBPIIContentBodyAreaView
 
 from PRESENTATION.VIEW.FORM.form_weight_material_view import FormWeightMaterialView
+from PRESENTATION.VIEW.FORM.form_weights_validation_view import FormWeightsValidationView
+
 
 from BUSINESS.MODEL.DOMAIN_OBJECT.line_excel_submition_do import LineExcelSubmitionDO
+from BUSINESS.MODEL.DOMAIN_OBJECT.line_weights_do import LineWeightsDO
 
 from BUSINESS.SERVICE.APPLICATION_SERVICE.INTF.accessdb_pii_as_intf import AccessDBPIIASIntf
 from BUSINESS.SERVICE.APPLICATION_SERVICE.IMPL.accessdb_pii_as_impl import AccessDBPIIASImpl
@@ -97,10 +102,52 @@ class AccessDBPIIController:
         return self.current_main_window_content_view
 
     def set_forms_weights_materials_views(self, forms_weights_materials_views: list):
+        """
+
+        :param forms_weights_materials_views: The list of Form Views in charge of the Recording of Weights
+        for the different Categories
+        :return: None
+        """
         self.forms_weights_materials_views = forms_weights_materials_views
 
     def get_forms_weights_materials_views(self) -> list:
+        """
+
+        :return: The list of Form Views in charge of the Recording of Weights for the different Categories
+        """
         return self.forms_weights_materials_views
+
+    def set_form_weights_validation_view(self, form_weights_validation_view: FormWeightsValidationView):
+        """
+
+        :param form_weights_validation_view: The VIEW corresponding to the Form in charge of the validation of the
+        weights inserted by the User
+        :return:
+        """
+        self.form_weights_validation_view = form_weights_validation_view
+
+    def get_form_weights_validation_view(self) -> FormWeightsValidationView:
+        """
+
+        :return: The VIEW corresponding to the Form in charge of the validation of the weights inserted by the User
+        """
+        return self.form_weights_validation_view
+
+    def set_current_area_selected(self, current_area_selected: str):
+        """
+
+        :param current_area_selected: The current "Area" parameter selected
+        :return:
+        """
+        self.current_area_selected = current_area_selected
+
+    def get_current_area_selected(self) -> str:
+        """
+
+        :return: The current "Area" parameter selected
+        """
+        return self.current_area_selected
+
 
     def set_current_weight_category(self, current_weight_category: str):
         """
@@ -154,6 +201,13 @@ class AccessDBPIIController:
         for category in self.categories_labels:
             self.get_forms_weights_materials_views().append(FormWeightMaterialView(category))
         self.category_counter = 0
+
+        # Initializing the VIEW corresponding to the Form for the validation of Weights
+        self.set_form_weights_validation_view(FormWeightsValidationView())
+
+        # Initializing the current "Area" selected  to None, its final confirmation will be done once the
+        # Business Logic has been launched
+        self.set_current_area_selected(None)
 
         # Initializing the list corresponding to the Weights currently recorded with an Empty list
         self.set_current_recorded_weights([])
@@ -214,7 +268,16 @@ class AccessDBPIIController:
         # is clicked, save the Input Text as the chosen Weight and pass to the next Form
         for view in self.get_forms_weights_materials_views():
             current_hmi = view.get_corresponding_hmi()
-            current_hmi.get_button_ok().clicked.connect(partial(self.pass_form_weight, current_hmi.get_label_material().text()))
+            current_hmi.get_button_ok().clicked.connect(
+                partial(self.pass_form_weight, current_hmi.get_label_material().text())
+            )
+
+        # When the "Button OK" of the Form for the Weights validation is clicked, proceed to the saving
+        # of all the weights in DB and close the Form at the end of it
+        form_weights_validation = self.get_form_weights_validation_view().get_corresponding_hmi()
+        self.get_form_weights_validation_view().get_corresponding_hmi().get_button_ok().clicked.connect(
+                self.save_weights
+        )
 
     def pass_content_zone(self, button: QPushButton):
         """
@@ -348,13 +411,15 @@ class AccessDBPIIController:
         :return: The list of MFG Lines retrieved
         """
         try:
+            # STEP 0: We are now sure the the current "Area" parameter is the definitive one... so..
+            self.set_current_area_selected(area_parameter)
             # STEP 1: Launching the READ process related to MFG data with the parameters required for.
             lines_mfg = self.get_accessdb_pii_as().read_mfg_data(zone_parameter, area_parameter)
             if lines_mfg:
                 # STEP 2: Managing anything related to the Excel "Submition" file
                 self.manage_excel_submition(zone_parameter, area_parameter, lines_mfg)
 
-                # STEP 3: Launching the Weight recording for each Category
+                # STEP 3: Launching the Weight recording for each Category, and then confirming them
                 self.launch_weights_recordings()
             else:
                 LOGGER.info(
@@ -526,10 +591,9 @@ class AccessDBPIIController:
                 else:
                     self.get_current_recorded_weighs()[4] = weight_entered
                 old_current_form_ui.close_hmi()
-                """
-                TEMPORARY, WILL BE MANAGED SERIOUSLY LATTER
-                """
-                print(self.get_current_recorded_weighs())
+
+                # Now, it's time the confirm all the Weights previously recorded
+                self.confirm_weights()
         except Exception as exception:
             # At least one error has occurred, therefore, stop the process
             LOGGER.error(
@@ -565,6 +629,79 @@ class AccessDBPIIController:
                 + ". Can't go further with the Recording process. "
             )
             raise
+
+    def confirm_weights(self):
+        """
+        Loading the confirmation process of all the Weights inserted by the User
+        :return: None
+        """
+        try:
+            form_weights_validation_view = self.get_form_weights_validation_view()
+
+            # First, let's load all the Weights to be validated...
+            form_weights_validation_view.feed_weights_to_confirm(self.get_current_recorded_weighs())
+            # ... before displaying the Form for their confirmation
+            form_weights_validation_view.get_corresponding_hmi().show_hmi()
+            # Finally, an update of the Events Management is necessary given the several evolutions before arriving here
+            self.manage_events()
+        except Exception as exception:
+            # At least one error has occurred, therefore, stop the process
+            LOGGER.error(
+                exception.__class__.__name__ + ": " + str(exception)
+                + ". Can't go further with the Confirmation process. "
+            )
+            raise
+
+    def save_weights(self):
+        """
+        Saving all the Weights confirmed by the User
+        :return: None
+        """
+        try:
+            # Preparing the LineWeightsDO to be saved in DB
+            line_weights_to_be_stored = LineWeightsDO()
+            line_weights_to_be_stored.set_area(self.get_current_area_selected())
+            validation_form = self.get_form_weights_validation_view().get_corresponding_hmi()
+            aluminium_weight = validation_form.get_text_aluminijum().text()
+            if len(aluminium_weight) > 0:
+                line_weights_to_be_stored.set_aluminium_weight(decimal.Decimal(aluminium_weight.replace(",", ".")))
+            copper_weight = validation_form.get_text_bakar().text()
+            if len(copper_weight) > 0:
+                line_weights_to_be_stored.set_copper_weight(decimal.Decimal(copper_weight.replace(",", ".")))
+            plastic_weight = validation_form.get_text_plastika().text()
+            if len(plastic_weight) > 0:
+                line_weights_to_be_stored.set_plastic_weight(decimal.Decimal(plastic_weight.replace(",", ".")))
+            terminal_weight = validation_form.get_text_terminali().text()
+            if len(terminal_weight) > 0:
+                line_weights_to_be_stored.set_terminal_weight(decimal.Decimal(terminal_weight.replace(",", ".")))
+            harness_weight = validation_form.get_text_harness().text()
+            if len(harness_weight) > 0:
+                line_weights_to_be_stored.set_harness_weight(decimal.Decimal(harness_weight.replace(",", ".")))
+            team = self.get_accessdb_pii_main_window_view().get_corresponding_hmi().get_combo_box_teams().currentText()
+            if len(team) > 0:
+                line_weights_to_be_stored.set_team(int(team))
+
+            # It's time to save all the confirmed Weights
+            if self.get_form_weights_validation_view().get_corresponding_hmi().get_form_weights_validation()\
+                    .isVisible():
+                self.get_accessdb_pii_as().save_line_weights(line_weights_to_be_stored)
+                # At the end of the process, the Form for the Confirmation of the Weight has to be closed
+                self.get_form_weights_validation_view().get_corresponding_hmi().close_hmi()
+                # And we need to "Re-Start" again
+                """TO BE MANAGED LATER"""
+                print("RESTART AGAIN!!!")
+        except Exception as exception:
+            # At least one error has occurred, therefore, stop the process
+            LOGGER.error(
+                exception.__class__.__name__ + ": " + str(exception)
+                + ". Can't go further with the Save process. "
+            )
+            raise
+
+
+
+
+
 
 
 

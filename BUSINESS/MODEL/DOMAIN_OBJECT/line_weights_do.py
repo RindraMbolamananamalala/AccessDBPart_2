@@ -29,34 +29,34 @@ class LineWeightsDO(AccessDBPIIDO):
     def get_area(self) -> str:
         return self.area
 
-    def set_aluminium_weight(self, aluminium_weight: int):
+    def set_aluminium_weight(self, aluminium_weight: decimal.Decimal):
         self.aluminium_weight = aluminium_weight
 
-    def get_aluminium_weight(self) -> int:
+    def get_aluminium_weight(self) -> decimal.Decimal:
         return self.aluminium_weight
 
-    def set_copper_weight(self, copper_weight: int):
+    def set_copper_weight(self, copper_weight: decimal.Decimal):
         self.copper_weight = copper_weight
 
-    def get_copper_weight(self) -> int:
+    def get_copper_weight(self) -> decimal.Decimal:
         return self.copper_weight
 
-    def set_plastic_weight(self, plastic_weight: int):
+    def set_plastic_weight(self, plastic_weight: decimal.Decimal):
         self.plastic_weight = plastic_weight
 
-    def get_plastic_weight(self) -> int:
+    def get_plastic_weight(self) -> decimal.Decimal:
         return self.plastic_weight
 
-    def set_terminal_weight(self, terminal_weight: int):
+    def set_terminal_weight(self, terminal_weight: decimal.Decimal):
         self.terminal_weight = terminal_weight
 
-    def get_terminal_weight(self) -> int:
+    def get_terminal_weight(self) -> decimal.Decimal:
         return self.terminal_weight
 
-    def set_harness_weight(self, harness_weight: int):
+    def set_harness_weight(self, harness_weight: decimal.Decimal):
         self.harness_weight = harness_weight
 
-    def get_harness_weight(self) -> int:
+    def get_harness_weight(self) -> decimal.Decimal:
         return self.harness_weight
 
     def set_team(self, team: int):
