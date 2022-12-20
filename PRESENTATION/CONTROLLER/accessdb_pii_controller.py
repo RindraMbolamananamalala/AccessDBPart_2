@@ -417,7 +417,10 @@ class AccessDBPIIController:
         :return: The list of MFG Lines retrieved
         """
         try:
-            # STEP 0: We are now sure the the current "Area" parameter is the definitive one... so..
+            # STEP 0a: Because the Business Logic has benn launched already, let's make the Main Window disabled,
+            # until the next specification of new parameters
+            self.get_accessdb_pii_main_window_view().get_corresponding_hmi().get_main_window().setDisabled(True)
+            # STEP 0b: We are now sure the the current "Area" parameter is the definitive one... so..
             self.set_current_area_selected(area_parameter)
             # STEP 1: Launching the READ process related to MFG data with the parameters required for.
             lines_mfg = self.get_accessdb_pii_as().read_mfg_data(zone_parameter, area_parameter)
@@ -712,6 +715,9 @@ class AccessDBPIIController:
         """
         try:
             main_window_view = self.get_accessdb_pii_main_window_view()
+            # First of all, let us not forget to Enable the Main Window again
+            main_window_view.get_corresponding_hmi().get_main_window().setEnabled(True)
+
             # "Content" Zone as the Main Window's content
             content_zone_view = AccessDBPIIContentZoneView(
                 main_window_view.get_corresponding_hmi().get_widget_content()
