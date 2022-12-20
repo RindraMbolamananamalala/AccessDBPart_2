@@ -46,7 +46,7 @@ class AccessDBPIIContentBodyZone(AccessDBPIIContentUI):
             super(AccessDBPIIContentBodyZone, self).__init__(parent)
 
             # The current Label for the description will have as text "Body zone"
-            self.label_bottom_description.setText("Body zone")
+            self.label_bottom_description.setText(get_application_property("body_zone_label"))
 
             # Managing the Body zone's options buttons
             self.set_content_body_zone_options([])

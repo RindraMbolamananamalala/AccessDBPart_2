@@ -44,7 +44,7 @@ class AccessDBPIIContentBodyArea(AccessDBPIIContentUI):
         super(AccessDBPIIContentBodyArea, self).__init__(parent)
 
         # The current Label for the description will have as text "Zone"
-        self.label_bottom_description.setText("Body Area")
+        self.label_bottom_description.setText(get_application_property("body_area_label"))
 
         try:
             # Managing the Body Area's options buttons

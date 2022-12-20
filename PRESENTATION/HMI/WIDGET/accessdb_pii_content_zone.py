@@ -44,7 +44,7 @@ class AccessDBPIIContentZone(AccessDBPIIContentUI):
         super(AccessDBPIIContentZone, self).__init__(parent)
 
         # The current Label for the description will have as text "Zone"
-        self.label_bottom_description.setText("Zone")
+        self.label_bottom_description.setText(get_application_property("zone_label"))
 
         try:
             # Managing the Zone's options buttons

@@ -45,7 +45,7 @@ class AccessDBPIIContentFamilije(AccessDBPIIContentUI):
         super(AccessDBPIIContentFamilije, self).__init__(parent)
 
         # The current Label for the description will have as text "Familije"
-        self.label_bottom_description.setText("Familije")
+        self.label_bottom_description.setText(get_application_property("familije_label"))
 
         try:
             # Loading the Familije's options buttons
