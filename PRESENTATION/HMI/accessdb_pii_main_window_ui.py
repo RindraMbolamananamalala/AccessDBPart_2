@@ -16,6 +16,8 @@ the Application.
 __author__ = "Rindra Mbolamananamalala"
 __email__ = "rindraibi@gmail.com"
 
+import sys
+
 from PySide2.QtCore import *
 from PySide2.QtGui import *
 from PySide2.QtWidgets import *
@@ -145,7 +147,23 @@ class Ui_MainWindow(AccessDBPIIHMI):
         self.retranslateUi(MainWindow)
 
         QMetaObject.connectSlotsByName(MainWindow)
+
+        # Managing all the Events related to the Window
+        self.manage_events()
+
     # setupUi
+
+    def manage_events(self):
+        """
+        Managing all the Events related to the Window
+        :return: None
+        """
+        # Making it possible to stop the entire Application when this Main Window is closed
+        self.get_main_window().closeEvent = self.close_event
+
+    def close_event(self, event):
+        # Directly stopping the entire Application
+        sys.exit()
 
     def feed_team_combo_box(self):
         """
