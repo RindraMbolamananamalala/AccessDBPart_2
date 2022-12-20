@@ -200,7 +200,6 @@ class AccessDBPIIController:
         self.categories_labels = ["Aluminijum", "Bakar", "Plastika", "Terminal", "Harness"]
         for category in self.categories_labels:
             self.get_forms_weights_materials_views().append(FormWeightMaterialView(category))
-        self.category_counter = 0
 
         # Initializing the VIEW corresponding to the Form for the validation of Weights
         self.set_form_weights_validation_view(FormWeightsValidationView())
@@ -609,7 +608,8 @@ class AccessDBPIIController:
         :return: None
         """
         try:
-            old_current_form_ui = self.get_forms_weights_materials_views()[current_form_weight_index].get_corresponding_hmi()
+            old_current_form_ui = self.get_forms_weights_materials_views()[current_form_weight_index]\
+                                        .get_corresponding_hmi()
             # Recording the Weight entered by the User
             weight_entered = old_current_form_ui.get_input_text_weight().text()
             if len(self.get_current_recorded_weighs()) <= current_form_weight_index:
@@ -619,7 +619,8 @@ class AccessDBPIIController:
             # Closing the old current Form
             old_current_form_ui.close_hmi()
             # Loading the new Form
-            new_current_form_ui = self.get_forms_weights_materials_views()[current_form_weight_index + 1].get_corresponding_hmi()
+            new_current_form_ui = self.get_forms_weights_materials_views()[current_form_weight_index + 1]\
+                                        .get_corresponding_hmi()
             new_current_form_ui.show_hmi()
             self.set_current_weight_category(self.categories_labels[current_form_weight_index + 1])
         except Exception as exception:
@@ -688,8 +689,7 @@ class AccessDBPIIController:
                 # At the end of the process, the Form for the Confirmation of the Weight has to be closed
                 self.get_form_weights_validation_view().get_corresponding_hmi().close_hmi()
                 # And we need to "Re-Start" again
-                """TO BE MANAGED LATER"""
-                print("RESTART AGAIN!!!")
+                self.start_another_submition()
         except Exception as exception:
             # At least one error has occurred, therefore, stop the process
             LOGGER.error(
@@ -697,6 +697,46 @@ class AccessDBPIIController:
                 + ". Can't go further with the Save process. "
             )
             raise
+
+    def start_another_submition(self):
+        """
+        Everything is finished with the current Submition, let's start another one
+        :return: None
+        """
+        try:
+            main_window_view = self.get_accessdb_pii_main_window_view()
+            # "Content" Zone as the Main Window's content
+            content_zone_view = AccessDBPIIContentZoneView(
+                main_window_view.get_corresponding_hmi().get_widget_content()
+            )
+            self.get_accessdb_pii_main_window_view().set_content_view(
+                content_zone_view
+            )
+            self.set_current_main_window_content_view(content_zone_view)
+            # If a team is already selected within the Team ComboBox of the Main Window, let's notify the
+            # "Content" Zone about it, in order to activate all of its Options Buttons.
+            # Otherwise, wait for the selection of a new Team to activate them again.
+            if main_window_view.get_corresponding_hmi().get_combo_box_teams().currentIndex() != -1:
+                self.get_current_main_window_content_view().manage_notification_by_parent()
+
+            # (Re-)Set current "Area" selected to None
+            self.set_current_area_selected(None)
+
+            # All the zone for the insertion of Weight for all the Categories within the corresponding Forms
+            # to be cleared
+            for view in self.get_forms_weights_materials_views():
+                view.get_corresponding_hmi().get_input_text_weight().clear()
+
+            # (Re-)update Events management
+            self.manage_events()
+        except Exception as exception:
+            # At least one error has occurred, therefore, stop the process
+            LOGGER.error(
+                exception.__class__.__name__ + ": " + str(exception)
+                + ". Can't go further with the Re-Start process. "
+            )
+            raise
+
 
 
 

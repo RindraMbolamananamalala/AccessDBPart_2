@@ -25,6 +25,9 @@ class AccessDBPIIContentZoneView(AccessDBPIIContentView):
         # Activating the Content Zone's options (buttons)
         for button in self.get_corresponding_hmi().get_content_zone_options():
             button.setEnabled(True)
+            button.setStyleSheet(u"background-color: #adaeaf;\n"
+                                 "color: #1c2632;\n"
+                                 "border-radius: 10px;")
 
     def __init__(self, parent: QWidget):
         #  First, let's call the Superclass' __init__() function
@@ -37,4 +40,6 @@ class AccessDBPIIContentZoneView(AccessDBPIIContentView):
         # a "Team" selection within the dedicated combobox, at the level of the Parent
         for button in self.get_corresponding_hmi().get_content_zone_options():
             button.setDisabled(True)
-
+            button.setStyleSheet(u"background-color: #adaeaf;\n"
+                                 "color: gray;\n"
+                                 "border-radius: 10px;")

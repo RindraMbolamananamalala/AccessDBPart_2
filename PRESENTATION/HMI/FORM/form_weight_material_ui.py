@@ -71,7 +71,7 @@ class FormWeightMaterialUI(AccessDBPIIHMI):
             form_weight_material.setObjectName(u"form_weigh_material")
         form_weight_material.setFixedSize(732, 314)
         form_weight_material.setStyleSheet(u"background-color: #d2d2d2;\n"
-                                          "border-radius: 25px;")
+                                           "border-radius: 25px;")
         self.label_unesi_tezinu = QLabel(form_weight_material)
         self.label_unesi_tezinu.setObjectName(u"label_unesi_tezinu")
         self.label_unesi_tezinu.setGeometry(QRect(10, 10, 171, 31))
@@ -101,8 +101,8 @@ class FormWeightMaterialUI(AccessDBPIIHMI):
         # regularizing the text input
         self.input_text_weight.textChanged.connect(self.regularize_weight_input)
         self.input_text_weight.setStyleSheet(u"border : 1px solid ; background-color: #e5e5e5;"
-                                            "border-radius: 25px;\n"
-                                            "border-color: #1c2632;")
+                                             "border-radius: 25px;\n"
+                                             "border-color: #1c2632;")
         self.button_ok = QPushButton(form_weight_material)
         self.button_ok.setObjectName(u"button_ok")
         self.button_ok.setGeometry(QRect(270, 220, 171, 61))
@@ -118,6 +118,7 @@ class FormWeightMaterialUI(AccessDBPIIHMI):
         self.retranslateUi(form_weight_material)
 
         QMetaObject.connectSlotsByName(form_weight_material)
+
     # setupUi
 
     def regularize_weight_input(self):
@@ -129,8 +130,6 @@ class FormWeightMaterialUI(AccessDBPIIHMI):
         text_to_be_regularized = self.get_input_text_weight().text()
         if len(text_to_be_regularized) < 1:
             self.get_input_text_weight().setText("0,00")
-
-
 
     def retranslateUi(self, form_weigh_material):
         form_weigh_material.setWindowTitle(QCoreApplication.translate("form_weigh_material", u"Form", None))
