@@ -29,3 +29,4 @@ class LineWeights(Data_Access_Base, AccessDBPIIEntity):
     harness = Column(DECIMAL(10, 2))
     team = Column(Integer)
     calendar_week = Column(DECIMAL(3, 1))
+    status = Column(Integer)

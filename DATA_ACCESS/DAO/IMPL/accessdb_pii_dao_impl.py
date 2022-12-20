@@ -138,6 +138,8 @@ class AccessDBPIIDAOImpl(AccessDBPIIDAOIntf):
                 + "."
                 + str(datetime.today().isocalendar()[2])
             )
+            # This is a newly-saved line, so not yet read
+            line_to_be_saved.status = 0
             with Session() as session:
                 session.add(line_to_be_saved)
                 session.commit()
