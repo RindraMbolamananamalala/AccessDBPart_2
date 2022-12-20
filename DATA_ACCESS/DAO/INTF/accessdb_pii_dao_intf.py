@@ -33,3 +33,12 @@ class AccessDBPIIDAOIntf(ABC):
         """
         pass
 
+    @abstractmethod
+    def update_mfg_line_status(self, id: int):
+        """
+        Setting the Status of a MFG Line represented by its "id" to 1 (read)
+        :param id: The id of the MFG Line to be updated
+        :return: None
+        """
+        pass
+

@@ -30,3 +30,4 @@ class LineMFG(Data_Access_Base, AccessDBPIIEntity):
     team = Column(Integer)
     calendar_week = Column(DECIMAL(3, 1))
     zone = Column(String)
+    status = Column(Integer)

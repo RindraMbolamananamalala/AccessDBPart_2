@@ -16,6 +16,13 @@ from BUSINESS.MODEL.DOMAIN_OBJECT.accessdb_pii_do import AccessDBPIIDO
 
 
 class LineMFGDO(AccessDBPIIDO):
+
+    def set_id(self, id: int):
+        self.id = id
+
+    def get_id(self) -> int:
+        return self.id
+
     def set_date_time(self, date_time: datetime.datetime):
         self.date_time = date_time
 

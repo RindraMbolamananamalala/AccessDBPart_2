@@ -32,3 +32,12 @@ class AccessDBPIIASIntf(ABC):
         :return: None
         """
         pass
+
+    @abstractmethod
+    def update_mfg_line_status(self, id: int):
+        """
+        Updating the Status of a MFG Line represented by its "id" (setting it to read)
+        :param id: The id of the MFG Line to be updated
+        :return: None
+        """
+        pass

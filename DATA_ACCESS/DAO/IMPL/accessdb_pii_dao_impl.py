@@ -1,13 +1,10 @@
-
 import decimal
 
 from datetime import datetime
 
 from sqlalchemy import and_, or_, extract
 
-
 from CONFIGURATIONS.logger import LOGGER
-
 
 from BUSINESS.MODEL.DOMAIN_OBJECT.line_mfg_do import LineMFGDO
 from BUSINESS.MODEL.DOMAIN_OBJECT.line_weights_do import LineWeightsDO
@@ -43,7 +40,8 @@ class AccessDBPIIDAOImpl(AccessDBPIIDAOIntf):
                 time_stamp_max = 6
             else:
                 # Should never end up here...
-                msg_error = "Impossible to find a Time Stamp for Current Hour : \"" + str(datetime.today().time()) + "\""
+                msg_error = "Impossible to find a Time Stamp for Current Hour : \"" + str(
+                    datetime.today().time()) + "\""
                 LOGGER.error(msg_error)
                 raise Exception(msg_error)
 
@@ -61,7 +59,9 @@ class AccessDBPIIDAOImpl(AccessDBPIIDAOIntf):
                             and_(
                                 extract("hour", LineMFG.date_time) >= time_stamp_min,
                                 extract("hour", LineMFG.date_time) < time_stamp_max
-                            )
+                            ),
+                            # verifying that line has not yet been read
+                            LineMFG.status == 0
                         )
                     ).all()
                 else:
@@ -76,7 +76,9 @@ class AccessDBPIIDAOImpl(AccessDBPIIDAOIntf):
                             or_(
                                 extract("hour", LineMFG.date_time) >= time_stamp_min,
                                 extract("hour", LineMFG.date_time) < time_stamp_max
-                            )
+                            ),
+                            # verifying that line has not yet been read
+                            LineMFG.status == 0
                         )
                     ).all()
             if results:
@@ -87,6 +89,7 @@ class AccessDBPIIDAOImpl(AccessDBPIIDAOIntf):
                 lines_mfg_retrieved = []
                 for result in results:
                     line_mfg = LineMFGDO()
+                    line_mfg.set_id(result.id)
                     line_mfg.set_date_time(result.date_time)
                     line_mfg.set_area(result.area)
                     line_mfg.set_station(result.station)
@@ -101,7 +104,7 @@ class AccessDBPIIDAOImpl(AccessDBPIIDAOIntf):
                 return lines_mfg_retrieved
             # No Line of MFG data has been retrieved, therefore, let's return an empty list
             LOGGER.info(
-                "No MFG line corresponding to parameters zone : \"" + zone_parameter
+                "No not-yet read MFG line corresponding to parameters zone : \"" + zone_parameter
                 + "\" and area : \"" + area_parameter + "\"" + " has been found"
                 + " between " + str(time_stamp_min) + ":00 and " + str(time_stamp_max - 1) + ":59."
             )
@@ -131,10 +134,10 @@ class AccessDBPIIDAOImpl(AccessDBPIIDAOIntf):
             line_to_be_saved.harness = weights_line.get_harness_weight()
             line_to_be_saved.team = weights_line.get_team()
             line_to_be_saved.calendar_week = decimal.Decimal(
-                    str(datetime.today().isocalendar()[1])
-                    + "."
-                    + str(datetime.today().isocalendar()[2])
-                )
+                str(datetime.today().isocalendar()[1])
+                + "."
+                + str(datetime.today().isocalendar()[2])
+            )
             with Session() as session:
                 session.add(line_to_be_saved)
                 session.commit()
@@ -146,6 +149,21 @@ class AccessDBPIIDAOImpl(AccessDBPIIDAOIntf):
             )
             raise
 
-
-
+    def update_mfg_line_status(self, id: int):
+        """
+        Setting the Status of a MFG Line represented by its "id" to 1 (read)
+        :param id: The id of the MFG Line to be updated
+        :return: None
+        """
+        try:
+            with Session() as session:
+                session.query(LineMFG).filter(LineMFG.id == id).update({'status': 1})
+                session.commit()
+        except Exception as exception:
+            # At least one error has occurred, therefore, stop the process
+            LOGGER.error(
+                exception.__class__.__name__ + ": " + str(exception)
+                + ". Can't go further with the Update Process. "
+            )
+            raise
 

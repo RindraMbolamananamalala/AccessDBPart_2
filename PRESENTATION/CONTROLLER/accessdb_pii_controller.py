@@ -430,6 +430,11 @@ class AccessDBPIIController:
 
                 # STEP 3: Launching the Weight recording for each Category, and then confirming them
                 self.launch_weights_recordings()
+
+                # POST-ACTION : Now that we're sure that all of the MFG Lines previously retrieved from the MFG tables
+                # have been used during the "Submition", we have to update their status in DB (to "read")
+                for line in lines_mfg:
+                    self.get_accessdb_pii_as().update_mfg_line_status(line.get_id())
             else:
                 LOGGER.info(
                     "No MFG line corresponding to parameters zone : \"" + zone_parameter + "\" and area : \""

@@ -67,6 +67,22 @@ class AccessDBPIIASImpl(AccessDBPIIASIntf):
             )
             raise
 
+    def update_mfg_line_status(self, id: int):
+        """
+        Updating the Status of a MFG Line represented by its "id" (setting it to read)
+        :param id: The id of the MFG Line to be updated
+        :return: None
+        """
+        try:
+            self.get_accessdb_pii_dao().update_mfg_line_status(id)
+        except Exception as exception:
+            # At least one error has occurred, therefore, stop the process
+            LOGGER.error(
+                exception.__class__.__name__ + ": " + str(exception)
+                + ". Can't go further with the Update Process. "
+            )
+            raise
+
     def __init__(self):
         # Initializing the DAO
         self.set_accessdb_pii_dao(AccessDBPIIDAOImpl())
