@@ -198,7 +198,7 @@ class AccessDBPIIController:
         # Category 4 : Terminal
         # Category 5 : Harness
         """
-        self.categories_labels = ["Aluminijum", "Bakar", "Plastika", "Terminal", "Harness"]
+        self.categories_labels = ["aluminijum", "bakar", "plastiku", "terminale", "harness"]
         for category in self.categories_labels:
             self.get_forms_weights_materials_views().append(FormWeightMaterialView(category))
 
