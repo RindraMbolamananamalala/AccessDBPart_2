@@ -185,6 +185,9 @@ class FormWeightsValidationUI(AccessDBPIIHMI):
                                         "background-color: #1c2632;\n"
                                         "color: #d2d2d2;")
 
+        # Until further notice, let's make it not possible to force the Form to be exited via the "X" Button
+        self.get_form_weights_validation().setWindowFlag(Qt.WindowCloseButtonHint, False)
+
         self.retranslateUi(form_weights_validation)
 
         QMetaObject.connectSlotsByName(form_weights_validation)
