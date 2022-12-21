@@ -197,7 +197,7 @@ class FormWeightsValidationUI(AccessDBPIIHMI):
     def retranslateUi(self, Form):
         Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
         self.label_finalna_potvrda.setText(QCoreApplication.translate("Form", u"Finalna potvrda", None))
-        self.label_aluminijium.setText(QCoreApplication.translate("Form", u"Aluminijium", None))
+        self.label_aluminijium.setText(QCoreApplication.translate("Form", u"Aluminijum", None))
         self.text_aluminijium.setPlaceholderText(QCoreApplication.translate("Form", u"kg", None))
         self.label_bakar.setText(QCoreApplication.translate("Form", u"Bakar", None))
         self.text_bakar.setPlaceholderText(QCoreApplication.translate("Form", u"kg", None))
