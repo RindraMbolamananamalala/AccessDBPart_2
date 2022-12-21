@@ -17,6 +17,7 @@ from PySide2.QtWidgets import *
 
 from CONFIGURATIONS.logger import LOGGER
 
+from PRESENTATION.HMI.DIALOG.accessdb_pii_message_box import AccessDBPIIMessageBox
 
 from PRESENTATION.VIEW.accessdb_pii_main_window_view import AccessDBPIIMainWindowView
 
@@ -425,6 +426,10 @@ class AccessDBPIIController:
             # STEP 1: Launching the READ process related to MFG data with the parameters required for.
             lines_mfg = self.get_accessdb_pii_as().read_mfg_data(zone_parameter, area_parameter)
             if lines_mfg:
+                """
+                At lest one MFG Line has been found with the combination of parameters, the Business Logic can 
+                continue ... 
+                """
                 # STEP 2: Managing anything related to the Excel "Submition" file
                 self.manage_excel_submition(zone_parameter, area_parameter, lines_mfg)
 
@@ -436,10 +441,17 @@ class AccessDBPIIController:
                 for line in lines_mfg:
                     self.get_accessdb_pii_as().update_mfg_line_status(line.get_id())
             else:
-                LOGGER.info(
-                    "No MFG line corresponding to parameters zone : \"" + zone_parameter + "\" and area : \""
-                    + area_parameter + "\" has been found."
-                )
+                """
+                No MFF line corresponding to the combination of parameters, let's inform the User about it and 
+                "Restart again" the Submition process
+                """
+                # Information...
+                message = "No MFG line corresponding to parameters zone : \"" + zone_parameter + "\" and area : \"" \
+                            + area_parameter + "\" has been found."
+                LOGGER.info(message)
+                AccessDBPIIMessageBox(message)
+                # Re-Start again...
+                self.start_another_submition()
         except Exception as exception:
             # At least one error has occurred, therefore, stop the process
             LOGGER.error(
