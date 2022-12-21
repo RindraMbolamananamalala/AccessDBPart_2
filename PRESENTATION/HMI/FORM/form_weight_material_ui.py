@@ -115,6 +115,9 @@ class FormWeightMaterialUI(AccessDBPIIHMI):
                                      "background-color: #1c2632;\n"
                                      "color: #d2d2d2;")
 
+        # Until further notice, let's make it not possible to force the Form to be exited via the "X" Button
+        self.get_form_weight_material().setWindowFlag(Qt.WindowCloseButtonHint, False)
+
         self.retranslateUi(form_weight_material)
 
         QMetaObject.connectSlotsByName(form_weight_material)
